@@ -848,11 +848,36 @@
 <p>Every feature described below is implemented in the platform's user interface. Please follow the numbered instructions and exact button names to complete each task.</p>
 <h2 id="user-roles-and-permissions">User Roles and Permissions<a class="headerlink" href="#user-roles-and-permissions" title="Permanent link">&para;</a></h2>
 <p>The system enforces strict role-based access control. Review the permissions assigned to each account type:</p>
-<p>| User Role | Dashboard URL | Accessible Navigation Items | Primary Responsibilities |</p>
-<p>| :--- | :--- | :--- | :--- |</p>
-<p>| <strong>Student</strong> | <code>student.html</code> | <strong>FSL Lessons</strong>, <strong>My Classroom</strong>, <strong>Profile</strong> | Browse lessons across Alphabet, Basic, and Intermediate levels; watch sign demonstration GIFs; mark lessons complete; take multiple-choice quizzes; track personal scores. |</p>
-<p>| <strong>Teacher</strong> | <code>teacher.html</code> | <strong>FSL Lessons</strong>, <strong>Classrooms</strong>, <strong>Sign and Spell</strong>, <strong>Profile</strong> | Create and manage classrooms; enroll new and existing students; track individual and class progress metrics; broadcast live sign demonstrations via camera recognition. |</p>
-<p>| <strong>Principal</strong> | <code>teacher.html</code> | <strong>Report</strong>, <strong>Code Generator</strong>, <strong>Profile</strong> | Generate and expire 16-character Teacher Registration Codes; review school-wide learning progress; export official Teachers, Students, and Progress reports to PDF/CSV. |</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">User Role</th>
+<th style="text-align: left;">Dashboard URL</th>
+<th style="text-align: left;">Accessible Navigation Items</th>
+<th style="text-align: left;">Primary Responsibilities</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Student</strong></td>
+<td style="text-align: left;"><code>student.html</code></td>
+<td style="text-align: left;"><strong>FSL Lessons</strong>, <strong>My Classroom</strong>, <strong>Profile</strong></td>
+<td style="text-align: left;">Browse lessons across Alphabet, Basic, and Intermediate levels; watch sign demonstration GIFs; mark lessons complete; take multiple-choice quizzes; track personal scores.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Teacher</strong></td>
+<td style="text-align: left;"><code>teacher.html</code></td>
+<td style="text-align: left;"><strong>FSL Lessons</strong>, <strong>Classrooms</strong>, <strong>Sign and Spell</strong>, <strong>Profile</strong></td>
+<td style="text-align: left;">Create and manage classrooms; enroll new and existing students; track individual and class progress metrics; broadcast live sign demonstrations via camera recognition.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Principal</strong></td>
+<td style="text-align: left;"><code>teacher.html</code></td>
+<td style="text-align: left;"><strong>Report</strong>, <strong>Code Generator</strong>, <strong>Profile</strong></td>
+<td style="text-align: left;">Generate and expire 16-character Teacher Registration Codes; review school-wide learning progress; export official Teachers, Students, and Progress reports to PDF/CSV.</td>
+</tr>
+</tbody>
+</table>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Students can belong to only one classroom at a time. If a student transfers to a new classroom, their previous teacher must remove them before the new teacher can enroll them.</p>
@@ -866,12 +891,8 @@
 <li>
 <p>The login screen presents two role tabs: <strong>Student</strong> and <strong>Teacher</strong>:</p>
 <ul>
-<li>
-<p>To log in as a student, click the <strong>Student</strong> tab.</p>
-</li>
-<li>
-<p>To log in as a teacher or principal, click the <strong>Teacher</strong> tab.</p>
-</li>
+<li>To log in as a student, click the <strong>Student</strong> tab.</li>
+<li>To log in as a teacher or principal, click the <strong>Teacher</strong> tab.</li>
 </ul>
 </li>
 <li>
@@ -893,24 +914,12 @@
 <li>
 <p>In the registration form (or by toggling to the register view), complete the required fields:</p>
 <ul>
-<li>
-<p><strong>First Name</strong> and <strong>Last Name</strong> (combined into Full Name)</p>
-</li>
-<li>
-<p><strong>Username</strong> (3 to 30 characters; letters, numbers, underscores, dots, or hyphens)</p>
-</li>
-<li>
-<p><strong>Email Address</strong> (optional, for contact records)</p>
-</li>
-<li>
-<p><strong>Password</strong> (minimum of 6 characters)</p>
-</li>
-<li>
-<p><strong>Confirm Password</strong> (must match password exactly)</p>
-</li>
-<li>
-<p><strong>Teacher Registration Code</strong> (16-character code in the format <code>FSL-XXXXXXXX-XXXXXXXX</code>)</p>
-</li>
+<li><strong>First Name</strong> and <strong>Last Name</strong> (combined into Full Name)</li>
+<li><strong>Username</strong> (3 to 30 characters; letters, numbers, underscores, dots, or hyphens)</li>
+<li><strong>Email Address</strong> (optional, for contact records)</li>
+<li><strong>Password</strong> (minimum of 6 characters)</li>
+<li><strong>Confirm Password</strong> (must match password exactly)</li>
+<li><strong>Teacher Registration Code</strong> (16-character code in the format <code>FSL-XXXXXXXX-XXXXXXXX</code>)</li>
 </ul>
 </li>
 <li>
@@ -937,12 +946,8 @@
 <li>
 <p>In the modal dialog:</p>
 <ul>
-<li>
-<p>Enter the <strong>Classroom Name</strong> (e.g., <code>Grade 1 - Daisy</code>).</p>
-</li>
-<li>
-<p>Enter a brief <strong>Description</strong> (optional).</p>
-</li>
+<li>Enter the <strong>Classroom Name</strong> (e.g., <code>Grade 1 - Daisy</code>).</li>
+<li>Enter a brief <strong>Description</strong> (optional).</li>
 </ul>
 </li>
 <li>
@@ -983,21 +988,11 @@
 <li>
 <p>Complete the learner profile details:</p>
 <ul>
-<li>
-<p><strong>Full Name</strong> (e.g., <code>Marian Marchan</code>)</p>
-</li>
-<li>
-<p><strong>Username</strong> (e.g., <code>marian10949</code>)</p>
-</li>
-<li>
-<p><strong>Password</strong> (temporary password for the pupil, at least 6 characters)</p>
-</li>
-<li>
-<p><strong>Age</strong> (e.g., <code>10</code>)</p>
-</li>
-<li>
-<p><strong>Gender</strong> (select <code>Boy</code>, <code>Girl</code>, <code>Male</code>, <code>Female</code>, or <code>Other</code>)</p>
-</li>
+<li><strong>Full Name</strong> (e.g., <code>Marian Marchan</code>)</li>
+<li><strong>Username</strong> (e.g., <code>marian10949</code>)</li>
+<li><strong>Password</strong> (temporary password for the pupil, at least 6 characters)</li>
+<li><strong>Age</strong> (e.g., <code>10</code>)</li>
+<li><strong>Gender</strong> (select <code>Boy</code>, <code>Girl</code>, <code>Male</code>, <code>Female</code>, or <code>Other</code>)</li>
 </ul>
 </li>
 <li>
@@ -1032,15 +1027,9 @@
 <li>
 <p>The screen presents three progressive learning tiers:</p>
 <ul>
-<li>
-<p><strong>Alphabet</strong>: 26 letters of the FSL alphabet.</p>
-</li>
-<li>
-<p><strong>Basic Vocabulary</strong>: 15 categories (Numbers, Colors, Fruits, Vegetables, Animals, Food, etc.).</p>
-</li>
-<li>
-<p><strong>Intermediate Vocabulary</strong>: 9 categories (Occupations, Transportation, Emergencies, Community, etc.).</p>
-</li>
+<li><strong>Alphabet</strong>: 26 letters of the FSL alphabet.</li>
+<li><strong>Basic Vocabulary</strong>: 15 categories (Numbers, Colors, Fruits, Vegetables, Animals, Food, etc.).</li>
+<li><strong>Intermediate Vocabulary</strong>: 9 categories (Occupations, Transportation, Emergencies, Community, etc.).</li>
 </ul>
 </li>
 <li>
@@ -1049,15 +1038,9 @@
 <li>
 <p>Click on an individual lesson card to open the <strong>Lesson Viewer</strong>:</p>
 <ul>
-<li>
-<p>Observe the high-definition animated sign demonstration GIF.</p>
-</li>
-<li>
-<p>Read the English and Filipino vocabulary term.</p>
-</li>
-<li>
-<p>Review the descriptive signing instructions and <strong>Helpful Tips</strong>.</p>
-</li>
+<li>Observe the high-definition animated sign demonstration GIF.</li>
+<li>Read the English and Filipino vocabulary term.</li>
+<li>Review the descriptive signing instructions and <strong>Helpful Tips</strong>.</li>
 </ul>
 </li>
 <li>
@@ -1085,12 +1068,8 @@
 <li>
 <p>The animated <strong>Feedback Tray</strong> slides up from the bottom of the screen:</p>
 <ul>
-<li>
-<p>A green tray with a checkmark indicates a <strong>Correct</strong> response.</p>
-</li>
-<li>
-<p>A red tray indicates an <strong>Incorrect</strong> response and highlights the correct sign.</p>
-</li>
+<li>A green tray with a checkmark indicates a <strong>Correct</strong> response.</li>
+<li>A red tray indicates an <strong>Incorrect</strong> response and highlights the correct sign.</li>
 </ul>
 </li>
 <li>
@@ -1136,54 +1115,30 @@
 </ol>
 <p>Below is a sample API request payload transmitted to the machine learning service during recognition:</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">"landmarks"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="mf">0.542</span><span class="p">,</span><span class="w"> </span><span class="mf">0.721</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.001</span><span class="p">,</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="mf">0.498</span><span class="p">,</span><span class="w"> </span><span class="mf">0.684</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.015</span><span class="p">,</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="mf">0.472</span><span class="p">,</span><span class="w"> </span><span class="mf">0.612</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.024</span><span class="p">,</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="mf">0.461</span><span class="p">,</span><span class="w"> </span><span class="mf">0.545</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.031</span><span class="p">,</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="mf">0.450</span><span class="p">,</span><span class="w"> </span><span class="mf">0.490</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.038</span><span class="p">,</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="mf">0.512</span><span class="p">,</span><span class="w"> </span><span class="mf">0.485</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.012</span><span class="p">,</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="mf">0.518</span><span class="p">,</span><span class="w"> </span><span class="mf">0.420</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.022</span><span class="p">,</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">    </span><span class="mf">0.522</span><span class="p">,</span><span class="w"> </span><span class="mf">0.380</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.029</span><span class="p">,</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="mf">0.525</span><span class="p">,</span><span class="w"> </span><span class="mf">0.345</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.035</span><span class="p">,</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">    </span><span class="mf">0.545</span><span class="p">,</span><span class="w"> </span><span class="mf">0.495</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.010</span><span class="p">,</span>
-</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">    </span><span class="mf">0.552</span><span class="p">,</span><span class="w"> </span><span class="mf">0.435</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.020</span><span class="p">,</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">    </span><span class="mf">0.556</span><span class="p">,</span><span class="w"> </span><span class="mf">0.395</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.027</span><span class="p">,</span>
-</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">    </span><span class="mf">0.558</span><span class="p">,</span><span class="w"> </span><span class="mf">0.360</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.033</span><span class="p">,</span>
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">    </span><span class="mf">0.575</span><span class="p">,</span><span class="w"> </span><span class="mf">0.515</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.012</span><span class="p">,</span>
-</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">    </span><span class="mf">0.582</span><span class="p">,</span><span class="w"> </span><span class="mf">0.465</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.021</span><span class="p">,</span>
-</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>
-</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="w">    </span><span class="mf">0.585</span><span class="p">,</span><span class="w"> </span><span class="mf">0.430</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.028</span><span class="p">,</span>
-</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>
-</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="w">    </span><span class="mf">0.587</span><span class="p">,</span><span class="w"> </span><span class="mf">0.400</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.034</span><span class="p">,</span>
-</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>
-</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="w">    </span><span class="mf">0.605</span><span class="p">,</span><span class="w"> </span><span class="mf">0.545</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.015</span><span class="p">,</span>
-</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a>
-</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="w">    </span><span class="mf">0.615</span><span class="p">,</span><span class="w"> </span><span class="mf">0.505</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.024</span><span class="p">,</span>
-</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a>
-</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="w">    </span><span class="mf">0.620</span><span class="p">,</span><span class="w"> </span><span class="mf">0.475</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.030</span><span class="p">,</span>
-</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a>
-</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a><span class="w">    </span><span class="mf">0.622</span><span class="p">,</span><span class="w"> </span><span class="mf">0.450</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.035</span>
-</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a>
-</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a><span class="w">  </span><span class="p">]</span>
-</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a>
-</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a><span class="p">}</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">"landmarks"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="mf">0.542</span><span class="p">,</span><span class="w"> </span><span class="mf">0.721</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.001</span><span class="p">,</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="mf">0.498</span><span class="p">,</span><span class="w"> </span><span class="mf">0.684</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.015</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="mf">0.472</span><span class="p">,</span><span class="w"> </span><span class="mf">0.612</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.024</span><span class="p">,</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="mf">0.461</span><span class="p">,</span><span class="w"> </span><span class="mf">0.545</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.031</span><span class="p">,</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="mf">0.450</span><span class="p">,</span><span class="w"> </span><span class="mf">0.490</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.038</span><span class="p">,</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="mf">0.512</span><span class="p">,</span><span class="w"> </span><span class="mf">0.485</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.012</span><span class="p">,</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="mf">0.518</span><span class="p">,</span><span class="w"> </span><span class="mf">0.420</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.022</span><span class="p">,</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="mf">0.522</span><span class="p">,</span><span class="w"> </span><span class="mf">0.380</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.029</span><span class="p">,</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="mf">0.525</span><span class="p">,</span><span class="w"> </span><span class="mf">0.345</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.035</span><span class="p">,</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="mf">0.545</span><span class="p">,</span><span class="w"> </span><span class="mf">0.495</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.010</span><span class="p">,</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="mf">0.552</span><span class="p">,</span><span class="w"> </span><span class="mf">0.435</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.020</span><span class="p">,</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="mf">0.556</span><span class="p">,</span><span class="w"> </span><span class="mf">0.395</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.027</span><span class="p">,</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="mf">0.558</span><span class="p">,</span><span class="w"> </span><span class="mf">0.360</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.033</span><span class="p">,</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">    </span><span class="mf">0.575</span><span class="p">,</span><span class="w"> </span><span class="mf">0.515</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.012</span><span class="p">,</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="mf">0.582</span><span class="p">,</span><span class="w"> </span><span class="mf">0.465</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.021</span><span class="p">,</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="mf">0.585</span><span class="p">,</span><span class="w"> </span><span class="mf">0.430</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.028</span><span class="p">,</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">    </span><span class="mf">0.587</span><span class="p">,</span><span class="w"> </span><span class="mf">0.400</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.034</span><span class="p">,</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">    </span><span class="mf">0.605</span><span class="p">,</span><span class="w"> </span><span class="mf">0.545</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.015</span><span class="p">,</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="mf">0.615</span><span class="p">,</span><span class="w"> </span><span class="mf">0.505</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.024</span><span class="p">,</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">    </span><span class="mf">0.620</span><span class="p">,</span><span class="w"> </span><span class="mf">0.475</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.030</span><span class="p">,</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">    </span><span class="mf">0.622</span><span class="p">,</span><span class="w"> </span><span class="mf">0.450</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.035</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">  </span><span class="p">]</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="p">}</span>
 </span></code></pre></div>
 <h2 id="principal-code-generator">Principal Code Generator<a class="headerlink" href="#principal-code-generator" title="Permanent link">&para;</a></h2>
 <p>The School Principal is the sole authority permitted to issue Teacher Registration Codes:</p>
@@ -1200,18 +1155,9 @@
 <li>
 <p>Select the code <strong>Expiration Window</strong>:</p>
 <ul>
-<li>
-<p><code>24 Hours</code></p>
-</li>
-<li>
-<p><code>7 Days</code></p>
-</li>
-<li>
-<p><code>30 Days</code></p>
-</li>
-<li>
-<p><code>Never Expire</code> [TODO: confirm]</p>
-</li>
+<li><code>24 Hours</code></li>
+<li><code>7 Days</code></li>
+<li><code>30 Days</code></li>
 </ul>
 </li>
 <li>
@@ -1233,19 +1179,13 @@
 <li>
 <p>Select one of the three primary report types:</p>
 <ul>
-<li>
-<p><strong>Teachers Report</strong>: List of registered teachers, assigned classrooms, and total enrolled pupils.</p>
-</li>
-<li>
-<p><strong>Students Report</strong>: Roster of students with completed lesson counts, average quiz scores, and last active dates.</p>
-</li>
-<li>
-<p><strong>Overall Learning Progress Report</strong>: School-wide breakdown across Alphabet, Basic, and Intermediate categories.</p>
-</li>
+<li><strong>Teachers Report</strong>: List of registered teachers, assigned classrooms, and total enrolled pupils.</li>
+<li><strong>Students Report</strong>: Roster of students with completed lesson counts, average quiz scores, and last active dates.</li>
+<li><strong>Overall Learning Progress Report</strong>: School-wide breakdown across Alphabet, Basic, and Intermediate categories.</li>
 </ul>
 </li>
 <li>
-<p>Use the top filter controls to narrow data by <strong>School Year</strong> [TODO: confirm], <strong>Grade Level</strong>, or <strong>Section</strong>.</p>
+<p>Use the top filter controls to narrow data by <strong>School Year</strong>, <strong>Grade Level</strong>, or <strong>Section</strong>.</p>
 </li>
 <li>
 <p>To save an official copy, click <strong>Export PDF</strong>. The browser compiles the report using jsPDF and AutoTable and initiates an immediate file download.</p>

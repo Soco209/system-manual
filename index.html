@@ -524,10 +524,10 @@
 <p>The system addresses the severe shortage of localized, accessible, and structured digital tools for learning Filipino Sign Language. By combining visual sign demonstrations, interactive vocabulary learning, graded practice, multiple-choice quizzes, and computer-vision-assisted hand sign recognition, FSL Learn offers an engaging and supportive learning environment for Filipino classrooms.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-</div>
 <p>System Version: <strong>2.0.0</strong><br />
- Manual Release Date: <strong>November 2026</strong><br />
- Architecture: PHP 8.x (Apache / PDO) backend with a FastAPI Python 3 Machine Learning service.</p>
+Manual Release Date: <strong>November 2026</strong><br />
+Architecture: PHP 8.x (Apache / PDO) backend with a FastAPI Python 3 Machine Learning service.</p>
+</div>
 <h2 id="who-this-manual-is-for">Who This Manual Is For<a class="headerlink" href="#who-this-manual-is-for" title="Permanent link">&para;</a></h2>
 <p>This user manual is designed for the three primary user roles operating the platform:</p>
 <ul>
@@ -538,20 +538,22 @@
 <h2 id="key-system-features">Key System Features<a class="headerlink" href="#key-system-features" title="Permanent link">&para;</a></h2>
 <p>FSL Learn provides comprehensive educational and administrative capabilities:</p>
 <ul>
-<li><strong>Structured Three-Tier Curriculum</strong>:</li>
+<li><strong>Structured Three-Tier Curriculum</strong>:<ul>
 <li><strong>Alphabet</strong>: 26 letters of the FSL alphabet with letter cards and hand demonstration animations.</li>
 <li><strong>Basic Vocabulary</strong>: 15 thematic categories covering Numbers, Colors, Fruits, Vegetables, Family, Shapes, Animals, Body Parts, Food and Drinks, School Objects, School Subjects, Time, Weather, Everyday Greetings, and H-Questions.</li>
 <li><strong>Intermediate Vocabulary</strong>: 9 advanced categories covering Occupations, Transportation, Hobbies, Daily Routine, Emergencies, Community, Emotions and Opinions, Meet &amp; Greet, and Money Matters.</li>
+</ul>
+</li>
 <li><strong>Interactive Demonstrations and Tips</strong>: High-quality animated demonstration GIFs paired with Filipino and English translations, category badges, and actionable signing tips.</li>
 <li><strong>Multiple-Choice Quizzes</strong>: Automated assessments with immediate visual feedback trays, passing score evaluations (70% benchmark), and permanent database scoring.</li>
 <li><strong>Classroom Management &amp; Unique Join Codes</strong>: Teachers create isolated classroom sections, generate 6-character alphanumeric join codes (e.g., <code>QPELNG</code>), and maintain a one-classroom-per-student enrollment policy.</li>
 <li><strong>Live Alphabet Hand Recognition ("Sign &amp; Spell")</strong>: Real-time camera feed analysis using Google MediaPipe Hands (21 3D landmarks) and a Scikit-learn Random Forest model to verify hand signs live in the browser.</li>
 <li><strong>Administrative Code Generator</strong>: Two-factor re-authenticated code generation allowing the Principal to produce 16-character registration codes (<code>FSL-XXXXXXXX-XXXXXXXX</code>) with configurable expiration windows.</li>
-<li><strong>School-Wide Analytics and Exportable Reporting</strong>: Consolidated performance reporting filterable by School Year [TODO: confirm], Grade Level, and Section, with one-click export to PDF and CSV formats.</li>
+<li><strong>School-Wide Analytics and Exportable Reporting</strong>: Consolidated performance reporting filterable by School Year, Grade Level, and Section, with one-click export to PDF and CSV formats.</li>
 </ul>
 <h2 id="system-verification-preview">System Verification Preview<a class="headerlink" href="#system-verification-preview" title="Permanent link">&para;</a></h2>
 <p>To verify that the platform's dual-backend architecture is operational, administrators can query the ML service health endpoint using a terminal command:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span>http://127.0.0.1:8000/api/health
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">curl </span><span class="n">-X</span> <span class="n">GET</span> <span class="n">http</span><span class="p">://</span><span class="n">127</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">1</span><span class="p">:</span><span class="n">8000</span><span class="p">/</span><span class="n">api</span><span class="p">/</span><span class="n">health</span>
 </span></code></pre></div>
 <p>A healthy system responds with a JSON status payload confirming that the computer vision service is active:</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
