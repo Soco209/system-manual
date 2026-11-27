@@ -5,7 +5,6 @@ This guide provides solutions for common issues encountered when setting up, run
 Follow the numbered diagnostic and repair steps in each section to resolve problems quickly.
 
 !!! note
-
     If you encounter an unexpected error or an issue not covered in this guide, record the exact error text, the browser console output (**F12 > Console**), and the server terminal logs, then contact the development team or your school IT administrator.
 
 ## Common Problems and Fixes
@@ -28,19 +27,13 @@ Follow the numbered diagnostic and repair steps in each section to resolve probl
 
 5. Check `backend/php/config.php` to ensure the credentials match your server configuration:
 
-```ini
-
-DB_HOST=127.0.0.1
-
-DB_PORT=3306
-
-DB_USER=root
-
-DB_PASS=your_password_here
-
-DB_NAME=fsl_learn
-
-```
+    ```ini
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_USER=root
+    DB_PASS=your_password_here
+    DB_NAME=fsl_learn
+    ```
 
 6. Refresh the web application in your browser.
 
@@ -58,43 +51,33 @@ DB_NAME=fsl_learn
 
 2. Navigate to the `backend/` folder of the project:
 
-```bash
-
-cd C:\Users\dexte\Documents\GitHub\FINAL-FSL\backend
-
-```
+    ```powershell
+    cd C:\path\to\FINAL-FSL\backend
+    ```
 
 3. Activate the virtual environment:
 
-```bat
-
-.\venv\Scripts\activate
-
-```
+    ```powershell
+    .\venv\Scripts\activate
+    ```
 
 4. Start the machine learning service:
 
-```bash
-
-python run.py
-
-```
+    ```powershell
+    python run.py
+    ```
 
 5. Test the service health using curl in another terminal:
 
-```bash
-
-curl -i http://127.0.0.1:8000/api/health
-
-```
+    ```powershell
+    curl -i http://127.0.0.1:8000/api/health
+    ```
 
 6. If port `8000` is occupied by another application, identify and terminate the conflicting process:
 
-```bash
-
-netstat -ano | findstr :8000
-
-```
+    ```powershell
+    netstat -ano | findstr :8000
+    ```
 
 7. Locate the PID from the rightmost column and stop it in Windows Task Manager.
 
@@ -119,7 +102,6 @@ netstat -ano | findstr :8000
 5. Review the **Teacher Registration Codes** table:
 
     - If the code shows `is_used = Yes`, it has already been redeemed.
-
     - If the code shows `Expired`, its validity window has elapsed.
 
 6. The Principal should generate a fresh code and provide it to the teacher. Refer to the [Code Generator section in the User Guide](usage.md#principal-code-generator).
@@ -172,16 +154,13 @@ netstat -ano | findstr :8000
 
 1. Verify that the `.htaccess` file exists in `C:\laragon\www\fsl_learn\.htaccess`. If missing, copy it from `backend/php/.htaccess`:
 
-```bat
-
-copy C:\Users\dexte\Documents\GitHub\FINAL-FSL\backend\php\.htaccess C:\laragon\www\fsl_learn\.htaccess
-
-```
+    ```powershell
+    copy C:\path\to\FINAL-FSL\backend\php\.htaccess C:\laragon\www\fsl_learn\.htaccess
+    ```
 
 2. Ensure `mod_rewrite` is enabled in Apache:
 
     - In Laragon: Click **Menu > Apache > Modules > rewrite_module** (ensure it has a checkmark).
-
     - In XAMPP: Open `httpd.conf` and verify `LoadModule rewrite_module modules/mod_rewrite.so` is not commented out.
 
 3. Restart Apache from the Laragon or XAMPP control panel.
@@ -191,20 +170,14 @@ copy C:\Users\dexte\Documents\GitHub\FINAL-FSL\backend\php\.htaccess C:\laragon\
 Use these diagnostic commands in PowerShell or Command Prompt to inspect your runtime environment:
 
 ```powershell
-
 # 1. Test MySQL connectivity and verify database tables
-
 mysql -u root -p -e "USE fsl_learn; SHOW TABLES;"
 
 # 2. Check if Apache (port 80) and Python ML (port 8000) are actively listening
-
 Get-NetTCPConnection -LocalPort 80, 8000, 3306 -ErrorAction SilentlyContinue | Select-Object LocalAddress, LocalPort, State, OwningProcess
 
 # 3. Test the Python FastAPI Health Endpoint directly
-
 Invoke-RestMethod -Uri "http://127.0.0.1:8000/api/health" -Method Get
-
 ```
 
 For detailed operational guidance on using each feature, consult the [User Guide](usage.md). For complete installation steps, refer to the [Installation Guide](installation.md).
-

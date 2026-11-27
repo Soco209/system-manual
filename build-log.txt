@@ -1,0 +1,13 @@
+
+ │  Material for MkDocs reaches end of life on May 5, 2027.
+ │  Critical fixes and security updates continue until that date.
+ │
+ │  Zensical is its maintained successor, built by the same team.
+ │  Try it alongside MkDocs with your existing mkdocs.yml:
+ │  https://zensical.org/docs/compatibility/mkdocs/migration/
+
+  To disable this warning, set NO_MKDOCS_2_WARNING=1.
+
+INFO    -  Cleaning site directory
+INFO    -  Building documentation to directory: C:\Users\dexte\Documents\SAM ACTIVITY\system-manual\site
+INFO    -  Documentation built in 0.95 seconds

@@ -9,17 +9,12 @@ Every feature described below is implemented in the platform's user interface. P
 The system enforces strict role-based access control. Review the permissions assigned to each account type:
 
 | User Role | Dashboard URL | Accessible Navigation Items | Primary Responsibilities |
-
 | :--- | :--- | :--- | :--- |
-
 | **Student** | `student.html` | **FSL Lessons**, **My Classroom**, **Profile** | Browse lessons across Alphabet, Basic, and Intermediate levels; watch sign demonstration GIFs; mark lessons complete; take multiple-choice quizzes; track personal scores. |
-
 | **Teacher** | `teacher.html` | **FSL Lessons**, **Classrooms**, **Sign and Spell**, **Profile** | Create and manage classrooms; enroll new and existing students; track individual and class progress metrics; broadcast live sign demonstrations via camera recognition. |
-
 | **Principal** | `teacher.html` | **Report**, **Code Generator**, **Profile** | Generate and expire 16-character Teacher Registration Codes; review school-wide learning progress; export official Teachers, Students, and Progress reports to PDF/CSV. |
 
 !!! note
-
     Students can belong to only one classroom at a time. If a student transfers to a new classroom, their previous teacher must remove them before the new teacher can enroll them.
 
 ## Accessing the Platform and Logging In
@@ -31,7 +26,6 @@ All users access the application through the centralized sign-in interface. Foll
 2. The login screen presents two role tabs: **Student** and **Teacher**:
 
     - To log in as a student, click the **Student** tab.
-
     - To log in as a teacher or principal, click the **Teacher** tab.
 
 3. Enter your assigned **Username** and **Password**.
@@ -49,15 +43,10 @@ New teachers must register an account using a valid **Teacher Registration Code*
 2. In the registration form (or by toggling to the register view), complete the required fields:
 
     - **First Name** and **Last Name** (combined into Full Name)
-
     - **Username** (3 to 30 characters; letters, numbers, underscores, dots, or hyphens)
-
     - **Email Address** (optional, for contact records)
-
     - **Password** (minimum of 6 characters)
-
     - **Confirm Password** (must match password exactly)
-
     - **Teacher Registration Code** (16-character code in the format `FSL-XXXXXXXX-XXXXXXXX`)
 
 3. Click the **Create Teacher Account** button.
@@ -81,7 +70,6 @@ Follow these steps to establish a new classroom:
 4. In the modal dialog:
 
     - Enter the **Classroom Name** (e.g., `Grade 1 - Daisy`).
-
     - Enter a brief **Description** (optional).
 
 5. Click **Create Classroom**.
@@ -99,7 +87,6 @@ Follow these steps to update or inspect a classroom:
 3. To view enrolled learners, scroll down to the **Classroom Learners** table.
 
 !!! warning
-
     Deleting a classroom is irreversible. Deleting a classroom permanently disassociates its enrolled students and deletes classroom-specific quiz results. Always ensure student records are backed up before removing a classroom.
 
 ## Enrolling and Managing Learners
@@ -117,13 +104,9 @@ Follow these steps to create and enroll a new student account:
 3. Complete the learner profile details:
 
     - **Full Name** (e.g., `Marian Marchan`)
-
     - **Username** (e.g., `marian10949`)
-
     - **Password** (temporary password for the pupil, at least 6 characters)
-
     - **Age** (e.g., `10`)
-
     - **Gender** (select `Boy`, `Girl`, `Male`, `Female`, or `Other`)
 
 4. Click **Save Learner**.
@@ -151,9 +134,7 @@ Students use the **FSL Lessons** portal to study Filipino Sign Language vocabula
 3. The screen presents three progressive learning tiers:
 
     - **Alphabet**: 26 letters of the FSL alphabet.
-
     - **Basic Vocabulary**: 15 categories (Numbers, Colors, Fruits, Vegetables, Animals, Food, etc.).
-
     - **Intermediate Vocabulary**: 9 categories (Occupations, Transportation, Emergencies, Community, etc.).
 
 4. Click on a level, then select a category card (e.g., `Colors` or `Everyday Greetings`).
@@ -161,9 +142,7 @@ Students use the **FSL Lessons** portal to study Filipino Sign Language vocabula
 5. Click on an individual lesson card to open the **Lesson Viewer**:
 
     - Observe the high-definition animated sign demonstration GIF.
-
     - Read the English and Filipino vocabulary term.
-
     - Review the descriptive signing instructions and **Helpful Tips**.
 
 6. Practice the sign with your hand.
@@ -185,7 +164,6 @@ Each learning level and category includes multiple-choice quizzes to evaluate si
 5. The animated **Feedback Tray** slides up from the bottom of the screen:
 
     - A green tray with a checkmark indicates a **Correct** response.
-
     - A red tray indicates an **Incorrect** response and highlights the correct sign.
 
 6. Click **Continue** to move to the next question.
@@ -219,57 +197,31 @@ Teachers can demonstrate and practice signs live in front of the class using the
 Below is a sample API request payload transmitted to the machine learning service during recognition:
 
 ```json
-
 {
-
   "landmarks": [
-
     0.542, 0.721, -0.001,
-
     0.498, 0.684, -0.015,
-
     0.472, 0.612, -0.024,
-
     0.461, 0.545, -0.031,
-
     0.450, 0.490, -0.038,
-
     0.512, 0.485, -0.012,
-
     0.518, 0.420, -0.022,
-
     0.522, 0.380, -0.029,
-
     0.525, 0.345, -0.035,
-
     0.545, 0.495, -0.010,
-
     0.552, 0.435, -0.020,
-
     0.556, 0.395, -0.027,
-
     0.558, 0.360, -0.033,
-
     0.575, 0.515, -0.012,
-
     0.582, 0.465, -0.021,
-
     0.585, 0.430, -0.028,
-
     0.587, 0.400, -0.034,
-
     0.605, 0.545, -0.015,
-
     0.615, 0.505, -0.024,
-
     0.620, 0.475, -0.030,
-
     0.622, 0.450, -0.035
-
   ]
-
 }
-
 ```
 
 ## Principal Code Generator
@@ -285,12 +237,8 @@ The School Principal is the sole authority permitted to issue Teacher Registrati
 4. Select the code **Expiration Window**:
 
     - `24 Hours`
-
     - `7 Days`
-
     - `30 Days`
-
-    - `Never Expire` [TODO: confirm]
 
 5. Click **Generate Code**.
 
@@ -307,12 +255,10 @@ The Principal monitors school-wide learning metrics and generates printable docu
 2. Select one of the three primary report types:
 
     - **Teachers Report**: List of registered teachers, assigned classrooms, and total enrolled pupils.
-
     - **Students Report**: Roster of students with completed lesson counts, average quiz scores, and last active dates.
-
     - **Overall Learning Progress Report**: School-wide breakdown across Alphabet, Basic, and Intermediate categories.
 
-3. Use the top filter controls to narrow data by **School Year** [TODO: confirm], **Grade Level**, or **Section**.
+3. Use the top filter controls to narrow data by **School Year**, **Grade Level**, or **Section**.
 
 4. To save an official copy, click **Export PDF**. The browser compiles the report using jsPDF and AutoTable and initiates an immediate file download.
 
@@ -345,4 +291,3 @@ Follow these steps to end your session:
 3. The platform clears session tokens and redirects you to `login.html`.
 
 For assistance troubleshooting common login or runtime errors, see the [Troubleshooting Guide](troubleshooting.md).
-
