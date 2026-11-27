@@ -509,471 +509,835 @@
 </tbody>
 </table>
 <p>For assistance with setting up the software stack from scratch, proceed to the <a href="#installation">Installation Guide</a>. For end-user instructions and workflows, continue to the <a href="#usage">User Guide</a>.</p>
-<p><a href="../assets/fsl-learn-manual.pdf">Download the PDF manual</a></p></section><section class="print-page" id="installation" heading-number="2"><p># System Installation and Setup Guide</p>
-<p>This guide provides technical instructions for configuring, deploying, and verifying the **FSL Learn** application on a local server or development workstation.</p>
+<p><a href="../assets/fsl-learn-manual.pdf">Download the PDF manual</a></p></section><section class="print-page" id="installation" heading-number="2"><h1 id="installation-system-installation-and-setup-guide">System Installation and Setup Guide<a class="headerlink" href="#installation-system-installation-and-setup-guide" title="Permanent link">&para;</a></h1>
+<p>This guide provides technical instructions for configuring, deploying, and verifying the <strong>FSL Learn</strong> application on a local server or development workstation.</p>
 <p>The platform employs a hybrid architecture:</p>
-<p>- **PHP Web Backend \&amp; Assets**: Served via Apache (recommended: Laragon on Windows or XAMPP on macOS) using PDO MySQL.</p>
-<p>- **Python Machine Learning Service**: A FastAPI microservice running on Uvicorn that evaluates MediaPipe hand landmark vectors for real-time sign classification.</p>
-<p>## System Requirements</p>
+<ul>
+<li>
+<p><strong>PHP Web Backend &amp; Assets</strong>: Served via Apache (recommended: Laragon on Windows or XAMPP on macOS) using PDO MySQL.</p>
+</li>
+<li>
+<p><strong>Python Machine Learning Service</strong>: A FastAPI microservice running on Uvicorn that evaluates MediaPipe hand landmark vectors for real-time sign classification.</p>
+</li>
+</ul>
+<h2 id="installation-system-requirements">System Requirements<a class="headerlink" href="#installation-system-requirements" title="Permanent link">&para;</a></h2>
 <p>Before beginning the installation, verify that the host machine satisfies the following hardware and software requirements:</p>
 <p>| Component | Minimum Specification | Recommended Specification |</p>
 <p>| :--- | :--- | :--- |</p>
-<p>| **Operating System** | Windows 10 (64-bit) or macOS 12+ | Windows 11 (64-bit) or macOS Sonoma |</p>
-<p>| **Web Server** | Apache 2.4.x (via Laragon 6.x or XAMPP 8.2+) | Laragon 6.0 Full (Windows) |</p>
-<p>| **PHP Runtime** | PHP 8.1.x or 8.2.x (with PDO MySQL, JSON, cURL, OpenSSL) | PHP 8.2+ 64-bit |</p>
-<p>| **Python Runtime** | Python 3.10.x to 3.12.x (64-bit) | Python 3.11.9 (64-bit) |</p>
-<p>| **Database Server** | MySQL 8.0+ or MariaDB 10.4+ (Default port: 3306) | MySQL 8.0.35+ (<code>utf8mb4</code> encoding) |</p>
-<p>| **Client Browser** | Google Chrome 110+, Microsoft Edge 110+, or Firefox 115+ | Google Chrome (optimal WebRTC and MediaPipe support) |</p>
-<p>| **Camera Hardware** | Integrated 720p webcam or USB web camera | 1080p 30fps webcam for live sign recognition |</p>
+<p>| <strong>Operating System</strong> | Windows 10 (64-bit) or macOS 12+ | Windows 11 (64-bit) or macOS Sonoma |</p>
+<p>| <strong>Web Server</strong> | Apache 2.4.x (via Laragon 6.x or XAMPP 8.2+) | Laragon 6.0 Full (Windows) |</p>
+<p>| <strong>PHP Runtime</strong> | PHP 8.1.x or 8.2.x (with PDO MySQL, JSON, cURL, OpenSSL) | PHP 8.2+ 64-bit |</p>
+<p>| <strong>Python Runtime</strong> | Python 3.10.x to 3.12.x (64-bit) | Python 3.11.9 (64-bit) |</p>
+<p>| <strong>Database Server</strong> | MySQL 8.0+ or MariaDB 10.4+ (Default port: 3306) | MySQL 8.0.35+ (<code>utf8mb4</code> encoding) |</p>
+<p>| <strong>Client Browser</strong> | Google Chrome 110+, Microsoft Edge 110+, or Firefox 115+ | Google Chrome (optimal WebRTC and MediaPipe support) |</p>
+<p>| <strong>Camera Hardware</strong> | Integrated 720p webcam or USB web camera | 1080p 30fps webcam for live sign recognition |</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
+<p>Always ensure database credentials, secret keys, and passwords remain private. Never commit plain-text credentials to public repositories. Back up your <code>fsl_learn</code> database regularly before applying migrations or upgrading software packages.</p>
 </div>
-<p>&#x20;   Always ensure database credentials, secret keys, and passwords remain private. Never commit plain-text credentials to public repositories. Back up your <code>fsl\_learn</code> database regularly before applying migrations or upgrading software packages.</p>
-<p>## Step-by-Step Installation Instructions</p>
+<h2 id="installation-step-by-step-installation-instructions">Step-by-Step Installation Instructions<a class="headerlink" href="#installation-step-by-step-installation-instructions" title="Permanent link">&para;</a></h2>
 <p>Follow these numbered steps to configure the web server, database, and Python services.</p>
-<p>### 1. Retrieve the Application Codebase</p>
+<h3 id="installation-1-retrieve-the-application-codebase">1. Retrieve the Application Codebase<a class="headerlink" href="#installation-1-retrieve-the-application-codebase" title="Permanent link">&para;</a></h3>
 <p>Clone the project repository to your local workspace using Git [TODO: confirm repository URL], or extract the provided capstone release archive:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#installation-__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/your<span class="se">\_</span>organization/FINAL-FSL.git
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#installation-__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/your_organization/FINAL-FSL.git
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#installation-__codelineno-0-2"></a>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#installation-__codelineno-0-3"></a><span class="nb">cd</span><span class="w"> </span>FINAL-FSL
 </span></code></pre></div>
-<p>### 2. Configure the Web Server (Laragon on Windows)</p>
-<p>The easiest deployment environment on Windows is **Laragon**:</p>
-<p>1. Install and launch **Laragon**.</p>
-<p>2. Click **Start All** to activate both **Apache** and **MySQL**.</p>
-<p>3. Confirm that Apache is listening on port <code>80</code> (or <code>8080</code>) and MySQL is listening on port <code>3306</code>.</p>
-<p>4. Deploy the application files into Laragon's document root directory (<code>C:\\laragon\\www\\fsl\_learn</code>):</p>
-<p>&#x20;   - Create the directory <code>C:\\laragon\\www\\fsl\_learn</code> if it does not exist.</p>
-<p>&#x20;   - Copy all files from <code>backend/php/</code> directly into <code>C:\\laragon\\www\\fsl\_learn\\</code>.</p>
-<p>&#x20;   - Ensure <code>.htaccess</code> is copied to <code>C:\\laragon\\www\\fsl\_learn\\.htaccess</code> to enable API URL rewrites.</p>
-<p>&#x20;   - Copy the <code>frontend/</code> directory into <code>C:\\laragon\\www\\fsl\_learn\\frontend\\</code>.</p>
+<h3 id="installation-2-configure-the-web-server-laragon-on-windows">2. Configure the Web Server (Laragon on Windows)<a class="headerlink" href="#installation-2-configure-the-web-server-laragon-on-windows" title="Permanent link">&para;</a></h3>
+<p>The easiest deployment environment on Windows is <strong>Laragon</strong>:</p>
+<ol>
+<li>
+<p>Install and launch <strong>Laragon</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Start All</strong> to activate both <strong>Apache</strong> and <strong>MySQL</strong>.</p>
+</li>
+<li>
+<p>Confirm that Apache is listening on port <code>80</code> (or <code>8080</code>) and MySQL is listening on port <code>3306</code>.</p>
+</li>
+<li>
+<p>Deploy the application files into Laragon's document root directory (<code>C:\laragon\www\fsl_learn</code>):</p>
+<ul>
+<li>
+<p>Create the directory <code>C:\laragon\www\fsl_learn</code> if it does not exist.</p>
+</li>
+<li>
+<p>Copy all files from <code>backend/php/</code> directly into <code>C:\laragon\www\fsl_learn\</code>.</p>
+</li>
+<li>
+<p>Ensure <code>.htaccess</code> is copied to <code>C:\laragon\www\fsl_learn\.htaccess</code> to enable API URL rewrites.</p>
+</li>
+<li>
+<p>Copy the <code>frontend/</code> directory into <code>C:\laragon\www\fsl_learn\frontend\</code>.</p>
+</li>
+</ul>
+</li>
+</ol>
 <p>Alternatively, if running the Windows deployment helper script, execute <code>start.bat</code> in the project root:</p>
 <div class="language-bat highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#installation-__codelineno-1-1"></a><span class="k">start</span>.bat
 </span></code></pre></div>
 <p>This automated batch script synchronizes the web assets, verifies the directory structures, opens the default browser, and launches the Python service.</p>
-<p>### 3. Set Up and Initialize the MySQL Database</p>
-<p>The application connects to a MySQL database named <code>fsl\_learn</code>.</p>
+<h3 id="installation-3-set-up-and-initialize-the-mysql-database">3. Set Up and Initialize the MySQL Database<a class="headerlink" href="#installation-3-set-up-and-initialize-the-mysql-database" title="Permanent link">&para;</a></h3>
+<p>The application connects to a MySQL database named <code>fsl_learn</code>.</p>
 <p>You can import the schema manually via the MySQL CLI or HeidiSQL (included with Laragon):</p>
-<div class="language-sql highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#installation-__codelineno-2-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="o">`</span><span class="n">fsl</span><span class="err">\</span><span class="n">_learn</span><span class="o">`</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4</span><span class="err">\</span><span class="n">_unicode</span><span class="err">\</span><span class="n">_ci</span><span class="p">;</span>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#installation-__codelineno-2-1"></a><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="o">`</span><span class="n">fsl_learn</span><span class="o">`</span><span class="w"> </span><span class="nb">CHARACTER</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="w"> </span><span class="n">utf8mb4_unicode_ci</span><span class="p">;</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#installation-__codelineno-2-2"></a>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#installation-__codelineno-2-3"></a><span class="n">USE</span><span class="w"> </span><span class="o">`</span><span class="n">fsl</span><span class="err">\</span><span class="n">_learn</span><span class="o">`</span><span class="p">;</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#installation-__codelineno-2-3"></a><span class="n">USE</span><span class="w"> </span><span class="o">`</span><span class="n">fsl_learn</span><span class="o">`</span><span class="p">;</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#installation-__codelineno-2-4"></a>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#installation-__codelineno-2-5"></a><span class="k">SOURCE</span><span class="w"> </span><span class="k">C</span><span class="p">:</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">dexte</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">GitHub</span><span class="o">/</span><span class="k">FINAL</span><span class="o">-</span><span class="n">FSL</span><span class="o">/</span><span class="k">database</span><span class="o">/</span><span class="n">fslearn</span><span class="err">\</span><span class="n">_database</span><span class="p">.</span><span class="k">sql</span><span class="p">;</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#installation-__codelineno-2-5"></a><span class="k">SOURCE</span><span class="w"> </span><span class="k">C</span><span class="p">:</span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">dexte</span><span class="o">/</span><span class="n">Documents</span><span class="o">/</span><span class="n">GitHub</span><span class="o">/</span><span class="k">FINAL</span><span class="o">-</span><span class="n">FSL</span><span class="o">/</span><span class="k">database</span><span class="o">/</span><span class="n">fslearn_database</span><span class="p">.</span><span class="k">sql</span><span class="p">;</span>
 </span></code></pre></div>
-<p>Alternatively, the PHP backend contains an automatic bootstrap engine in <code>backend/php/config.php</code>. Upon the first API request, the system calls <code>ensure\_database()</code> to automatically create missing tables, indexes, constraints, seed the 263 lessons, and restore the protected Principal account (<code>username: principal</code>).</p>
-<p>### 4. Configure Database and Environment Settings</p>
+<p>Alternatively, the PHP backend contains an automatic bootstrap engine in <code>backend/php/config.php</code>. Upon the first API request, the system calls <code>ensure_database()</code> to automatically create missing tables, indexes, constraints, seed the 263 lessons, and restore the protected Principal account (<code>username: principal</code>).</p>
+<h3 id="installation-4-configure-database-and-environment-settings">4. Configure Database and Environment Settings<a class="headerlink" href="#installation-4-configure-database-and-environment-settings" title="Permanent link">&para;</a></h3>
 <p>Database credentials and service URLs are defined in <code>backend/php/config.php</code>. By default, the system uses standard Laragon local credentials. You can override these using system environment variables or by editing your local configuration:</p>
-<div class="language-ini highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#installation-__codelineno-3-1"></a><span class="na">\# Database Connection Settings</span>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#installation-__codelineno-3-1"></a><span class="c1"># Database Connection Settings</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#installation-__codelineno-3-2"></a>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#installation-__codelineno-3-3"></a><span class="na">DB\_HOST</span><span class="o">=</span><span class="s">127.0.0.1</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#installation-__codelineno-3-3"></a><span class="na">DB_HOST</span><span class="o">=</span><span class="s">127.0.0.1</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#installation-__codelineno-3-4"></a>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#installation-__codelineno-3-5"></a><span class="na">DB\_PORT</span><span class="o">=</span><span class="s">3306</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#installation-__codelineno-3-5"></a><span class="na">DB_PORT</span><span class="o">=</span><span class="s">3306</span>
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#installation-__codelineno-3-6"></a>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#installation-__codelineno-3-7"></a><span class="na">DB\_USER</span><span class="o">=</span><span class="s">your\_db\_username</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#installation-__codelineno-3-7"></a><span class="na">DB_USER</span><span class="o">=</span><span class="s">your_db_username</span>
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#installation-__codelineno-3-8"></a>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#installation-__codelineno-3-9"></a><span class="na">DB\_PASS</span><span class="o">=</span><span class="s">your\_db\_password\_here</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#installation-__codelineno-3-9"></a><span class="na">DB_PASS</span><span class="o">=</span><span class="s">your_db_password_here</span>
 </span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#installation-__codelineno-3-10"></a>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#installation-__codelineno-3-11"></a><span class="na">DB\_NAME</span><span class="o">=</span><span class="s">fsl\_learn</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#installation-__codelineno-3-11"></a><span class="na">DB_NAME</span><span class="o">=</span><span class="s">fsl_learn</span>
 </span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#installation-__codelineno-3-12"></a>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#installation-__codelineno-3-13"></a>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#installation-__codelineno-3-13"></a><span class="c1"># Python ML Microservice URL</span>
 </span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#installation-__codelineno-3-14"></a>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#installation-__codelineno-3-15"></a><span class="na">\# Python ML Microservice URL</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#installation-__codelineno-3-16"></a>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#installation-__codelineno-3-17"></a><span class="na">ML\_SERVICE\_URL</span><span class="o">=</span><span class="s">http://127.0.0.1:8000</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#installation-__codelineno-3-15"></a><span class="na">ML_SERVICE_URL</span><span class="o">=</span><span class="s">http://127.0.0.1:8000</span>
 </span></code></pre></div>
 <p>Sample PHP configuration excerpt from <code>backend/php/config.php</code>:</p>
-<div class="language-php highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#installation-__codelineno-4-1"></a><span class="x">define('DB\_HOST', getenv('DB\_HOST') ?: '127.0.0.1');</span>
+<div class="language-php highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#installation-__codelineno-4-1"></a><span class="x">define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1');</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#installation-__codelineno-4-2"></a>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#installation-__codelineno-4-3"></a><span class="x">define('DB\_PORT', getenv('DB\_PORT') ?: '3306');</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#installation-__codelineno-4-3"></a><span class="x">define('DB_PORT', getenv('DB_PORT') ?: '3306');</span>
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#installation-__codelineno-4-4"></a>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#installation-__codelineno-4-5"></a><span class="x">define('DB\_USER', getenv('DB\_USER') ?: 'root');</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#installation-__codelineno-4-5"></a><span class="x">define('DB_USER', getenv('DB_USER') ?: 'root');</span>
 </span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#installation-__codelineno-4-6"></a>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#installation-__codelineno-4-7"></a><span class="x">define('DB\_PASS', getenv('DB\_PASS') ?: '');</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#installation-__codelineno-4-7"></a><span class="x">define('DB_PASS', getenv('DB_PASS') ?: '');</span>
 </span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#installation-__codelineno-4-8"></a>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#installation-__codelineno-4-9"></a><span class="x">define('DB\_NAME', getenv('DB\_NAME') ?: 'fsl\_learn');</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#installation-__codelineno-4-9"></a><span class="x">define('DB_NAME', getenv('DB_NAME') ?: 'fsl_learn');</span>
 </span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#installation-__codelineno-4-10"></a>
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#installation-__codelineno-4-11"></a>
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#installation-__codelineno-4-12"></a>
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#installation-__codelineno-4-13"></a><span class="x">define('ML\_SERVICE\_URL', getenv('ML\_SERVICE\_URL') ?: 'http://127.0.0.1:8000');</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#installation-__codelineno-4-11"></a><span class="x">define('ML_SERVICE_URL', getenv('ML_SERVICE_URL') ?: 'http://127.0.0.1:8000');</span>
 </span></code></pre></div>
-<p>### 5. Set Up the Python Machine Learning Service</p>
+<h3 id="installation-5-set-up-the-python-machine-learning-service">5. Set Up the Python Machine Learning Service<a class="headerlink" href="#installation-5-set-up-the-python-machine-learning-service" title="Permanent link">&para;</a></h3>
 <p>The ML service processes hand landmark coordinates sent from the browser client during live sign recognition.</p>
 <p>Open a terminal or command prompt, navigate to the <code>backend/</code> directory, create a Python virtual environment, and install all required packages:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#installation-__codelineno-5-1"></a><span class="nb">cd</span><span class="w"> </span>backend
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#installation-__codelineno-5-2"></a>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#installation-__codelineno-5-3"></a>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#installation-__codelineno-5-4"></a>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#installation-__codelineno-5-5"></a>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#installation-__codelineno-5-5"></a><span class="c1"># On Windows (PowerShell or Command Prompt):</span>
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#installation-__codelineno-5-6"></a>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#installation-__codelineno-5-7"></a><span class="se">\#</span><span class="w"> </span>On<span class="w"> </span>Windows<span class="w"> </span><span class="o">(</span>PowerShell<span class="w"> </span>or<span class="w"> </span>Command<span class="w"> </span>Prompt<span class="o">)</span>:
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#installation-__codelineno-5-7"></a>.<span class="se">\v</span>env<span class="se">\S</span>cripts<span class="se">\a</span>ctivate
 </span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#installation-__codelineno-5-8"></a>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#installation-__codelineno-5-9"></a>.<span class="se">\\</span>venv<span class="se">\\</span>Scripts<span class="se">\\</span>activate
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#installation-__codelineno-5-9"></a><span class="c1"># On macOS or Linux:</span>
 </span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#installation-__codelineno-5-10"></a>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#installation-__codelineno-5-11"></a>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#installation-__codelineno-5-11"></a><span class="c1"># source venv/bin/activate</span>
 </span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#installation-__codelineno-5-12"></a>
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#installation-__codelineno-5-13"></a><span class="se">\#</span><span class="w"> </span>On<span class="w"> </span>macOS<span class="w"> </span>or<span class="w"> </span>Linux:
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#installation-__codelineno-5-13"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
 </span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#installation-__codelineno-5-14"></a>
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#installation-__codelineno-5-15"></a><span class="se">\#</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>venv/bin/activate
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#installation-__codelineno-5-16"></a>
-</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#installation-__codelineno-5-17"></a>
-</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#installation-__codelineno-5-18"></a>
-</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#installation-__codelineno-5-19"></a>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
-</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#installation-__codelineno-5-20"></a>
-</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#installation-__codelineno-5-21"></a>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#installation-__codelineno-5-15"></a>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
 </span></code></pre></div>
 <p>The <code>requirements.txt</code> file installs the following packages:</p>
-<p>- <code>fastapi==0.115.0</code></p>
-<p>- <code>uvicorn\[standard]==0.30.6</code></p>
-<p>- <code>python-multipart==0.0.9</code></p>
-<p>- <code>pydantic==2.9.2</code></p>
-<p>- <code>numpy&gt;=1.26.0,&lt;2.2.0</code></p>
-<p>- <code>scikit-learn&gt;=1.3.0,&lt;1.6</code></p>
-<p>- <code>joblib&gt;=1.3.0</code></p>
-<p>- <code>mediapipe&gt;=0.10.0</code></p>
-<p>- <code>opencv-python&gt;=4.8.0</code></p>
-<p>### 6. Start the Services</p>
+<ul>
+<li>
+<p><code>fastapi==0.115.0</code></p>
+</li>
+<li>
+<p><code>uvicorn[standard]==0.30.6</code></p>
+</li>
+<li>
+<p><code>python-multipart==0.0.9</code></p>
+</li>
+<li>
+<p><code>pydantic==2.9.2</code></p>
+</li>
+<li>
+<p><code>numpy&gt;=1.26.0,&lt;2.2.0</code></p>
+</li>
+<li>
+<p><code>scikit-learn&gt;=1.3.0,&lt;1.6</code></p>
+</li>
+<li>
+<p><code>joblib&gt;=1.3.0</code></p>
+</li>
+<li>
+<p><code>mediapipe&gt;=0.10.0</code></p>
+</li>
+<li>
+<p><code>opencv-python&gt;=4.8.0</code></p>
+</li>
+</ul>
+<h3 id="installation-6-start-the-services">6. Start the Services<a class="headerlink" href="#installation-6-start-the-services" title="Permanent link">&para;</a></h3>
 <p>Start the Python FastAPI server from the active virtual environment:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#installation-__codelineno-6-1"></a>python<span class="w"> </span>run.py
 </span></code></pre></div>
 <p>The terminal displays startup information confirming Uvicorn is listening:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#installation-__codelineno-7-1"></a>=======================================================
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#installation-__codelineno-7-2"></a>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#installation-__codelineno-7-3"></a>&amp;#x20;FSL Learn — ML Recognition Service
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#installation-__codelineno-7-3"></a> FSL Learn — ML Recognition Service
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#installation-__codelineno-7-4"></a>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#installation-__codelineno-7-5"></a>&amp;#x20;URL: http://0.0.0.0:8000/api/recognize
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#installation-__codelineno-7-5"></a> URL: http://0.0.0.0:8000/api/recognize
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#installation-__codelineno-7-6"></a>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#installation-__codelineno-7-7"></a>&amp;#x20;DB API:  served by PHP on Laragon Apache
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#installation-__codelineno-7-7"></a> DB API:  served by PHP on Laragon Apache
 </span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#installation-__codelineno-7-8"></a>
 </span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#installation-__codelineno-7-9"></a>=======================================================
 </span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#installation-__codelineno-7-10"></a>
 </span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#installation-__codelineno-7-11"></a>INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
 </span></code></pre></div>
-<p>## Verify the Installation</p>
+<h2 id="installation-verify-the-installation">Verify the Installation<a class="headerlink" href="#installation-verify-the-installation" title="Permanent link">&para;</a></h2>
 <p>To ensure every component functions correctly, perform the following verification checks:</p>
-<p>1. **Verify Python ML Service Health**: Open your terminal and test the health endpoint using curl:</p>
+<ol>
+<li><strong>Verify Python ML Service Health</strong>: Open your terminal and test the health endpoint using curl:</li>
+</ol>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#installation-__codelineno-8-1"></a>curl<span class="w"> </span>-i<span class="w"> </span>http://127.0.0.1:8000/api/health
 </span></code></pre></div>
 <p>Confirm that HTTP <code>200 OK</code> is returned with <code>{"status":"ok"}</code>.</p>
-<p>2. **Verify PHP Database Connection**: Navigate to the PHP backend health test URL in your browser:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#installation-__codelineno-9-1"></a>http://localhost/fsl\_learn/health.php
+<ol>
+<li><strong>Verify PHP Database Connection</strong>: Navigate to the PHP backend health test URL in your browser:</li>
+</ol>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#installation-__codelineno-9-1"></a>http://localhost/fsl_learn/health.php
 </span></code></pre></div>
 <p>The response must return a valid JSON object indicating database connectivity.</p>
-<p>3. **Verify Web Frontend Access**: Open Google Chrome and navigate to the application entrance:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#installation-__codelineno-10-1"></a>http://localhost/fsl\_learn/frontend/index.html
+<ol>
+<li><strong>Verify Web Frontend Access</strong>: Open Google Chrome and navigate to the application entrance:</li>
+</ol>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#installation-__codelineno-10-1"></a>http://localhost/fsl_learn/frontend/index.html
 </span></code></pre></div>
 <p>The landing page should display the logo, navigation links, and the hero section.</p>
-<p>Once your installation is verified, proceed to the [User Guide](usage.md) for step-by-step role workflows, or consult the [Troubleshooting Guide](troubleshooting.md) if you encounter any errors.</p></section><section class="print-page" id="usage" heading-number="3"><p># System User Guide</p>
-<p>This guide explains how to use the **FSL Learn** platform according to your assigned user role: **Student (Learner)**, **Teacher**, or **Principal**.</p>
+<p>Once your installation is verified, proceed to the <a href="#usage">User Guide</a> for step-by-step role workflows, or consult the <a href="#troubleshooting">Troubleshooting Guide</a> if you encounter any errors.</p></section><section class="print-page" id="usage" heading-number="3"><h1 id="usage-system-user-guide">System User Guide<a class="headerlink" href="#usage-system-user-guide" title="Permanent link">&para;</a></h1>
+<p>This guide explains how to use the <strong>FSL Learn</strong> platform according to your assigned user role: <strong>Student (Learner)</strong>, <strong>Teacher</strong>, or <strong>Principal</strong>.</p>
 <p>Every feature described below is implemented in the platform's user interface. Please follow the numbered instructions and exact button names to complete each task.</p>
-<p>## User Roles and Permissions</p>
+<h2 id="usage-user-roles-and-permissions">User Roles and Permissions<a class="headerlink" href="#usage-user-roles-and-permissions" title="Permanent link">&para;</a></h2>
 <p>The system enforces strict role-based access control. Review the permissions assigned to each account type:</p>
 <p>| User Role | Dashboard URL | Accessible Navigation Items | Primary Responsibilities |</p>
 <p>| :--- | :--- | :--- | :--- |</p>
-<p>| **Student** | <code>student.html</code> | **FSL Lessons**, **My Classroom**, **Profile** | Browse lessons across Alphabet, Basic, and Intermediate levels; watch sign demonstration GIFs; mark lessons complete; take multiple-choice quizzes; track personal scores. |</p>
-<p>| **Teacher** | <code>teacher.html</code> | **FSL Lessons**, **Classrooms**, **Sign and Spell**, **Profile** | Create and manage classrooms; enroll new and existing students; track individual and class progress metrics; broadcast live sign demonstrations via camera recognition. |</p>
-<p>| **Principal** | <code>teacher.html</code> | **Report**, **Code Generator**, **Profile** | Generate and expire 16-character Teacher Registration Codes; review school-wide learning progress; export official Teachers, Students, and Progress reports to PDF/CSV. |</p>
+<p>| <strong>Student</strong> | <code>student.html</code> | <strong>FSL Lessons</strong>, <strong>My Classroom</strong>, <strong>Profile</strong> | Browse lessons across Alphabet, Basic, and Intermediate levels; watch sign demonstration GIFs; mark lessons complete; take multiple-choice quizzes; track personal scores. |</p>
+<p>| <strong>Teacher</strong> | <code>teacher.html</code> | <strong>FSL Lessons</strong>, <strong>Classrooms</strong>, <strong>Sign and Spell</strong>, <strong>Profile</strong> | Create and manage classrooms; enroll new and existing students; track individual and class progress metrics; broadcast live sign demonstrations via camera recognition. |</p>
+<p>| <strong>Principal</strong> | <code>teacher.html</code> | <strong>Report</strong>, <strong>Code Generator</strong>, <strong>Profile</strong> | Generate and expire 16-character Teacher Registration Codes; review school-wide learning progress; export official Teachers, Students, and Progress reports to PDF/CSV. |</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
+<p>Students can belong to only one classroom at a time. If a student transfers to a new classroom, their previous teacher must remove them before the new teacher can enroll them.</p>
 </div>
-<p>&#x20;   Students can belong to only one classroom at a time. If a student transfers to a new classroom, their previous teacher must remove them before the new teacher can enroll them.</p>
-<p>## Accessing the Platform and Logging In</p>
+<h2 id="usage-accessing-the-platform-and-logging-in">Accessing the Platform and Logging In<a class="headerlink" href="#usage-accessing-the-platform-and-logging-in" title="Permanent link">&para;</a></h2>
 <p>All users access the application through the centralized sign-in interface. Follow these steps:</p>
-<p>1. Open your web browser and navigate to the application login page: <code>http://localhost/fsl\_learn/frontend/login.html</code></p>
-<p>2. The login screen presents two role tabs: **Student** and **Teacher**:</p>
-<p>&#x20;   - To log in as a student, click the **Student** tab.</p>
-<p>&#x20;   - To log in as a teacher or principal, click the **Teacher** tab.</p>
-<p>3. Enter your assigned **Username** and **Password**.</p>
-<p>4. Click the **Login** (or **Sign In**) button.</p>
-<p>5. Upon successful authentication, students are directed to <code>student.html</code>, while teachers and principals are routed to <code>teacher.html</code>.</p>
-<p>## Teacher Account Registration</p>
-<p>New teachers must register an account using a valid **Teacher Registration Code** generated by the School Principal:</p>
-<p>1. Navigate to the login page (<code>login.html</code>) and select the **Teacher** tab.</p>
-<p>2. In the registration form (or by toggling to the register view), complete the required fields:</p>
-<p>&#x20;   - **First Name** and **Last Name** (combined into Full Name)</p>
-<p>&#x20;   - **Username** (3 to 30 characters; letters, numbers, underscores, dots, or hyphens)</p>
-<p>&#x20;   - **Email Address** (optional, for contact records)</p>
-<p>&#x20;   - **Password** (minimum of 6 characters)</p>
-<p>&#x20;   - **Confirm Password** (must match password exactly)</p>
-<p>&#x20;   - **Teacher Registration Code** (16-character code in the format <code>FSL-XXXXXXXX-XXXXXXXX</code>)</p>
-<p>3. Click the **Create Teacher Account** button.</p>
-<p>4. The system validates the code against the database. If the code is active and unredeemed, your teacher account is created immediately and you are logged in to the Teacher Dashboard.</p>
-<p>## Teacher Classroom Management</p>
+<ol>
+<li>
+<p>Open your web browser and navigate to the application login page: <code>http://localhost/fsl_learn/frontend/login.html</code></p>
+</li>
+<li>
+<p>The login screen presents two role tabs: <strong>Student</strong> and <strong>Teacher</strong>:</p>
+<ul>
+<li>
+<p>To log in as a student, click the <strong>Student</strong> tab.</p>
+</li>
+<li>
+<p>To log in as a teacher or principal, click the <strong>Teacher</strong> tab.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Enter your assigned <strong>Username</strong> and <strong>Password</strong>.</p>
+</li>
+<li>
+<p>Click the <strong>Login</strong> (or <strong>Sign In</strong>) button.</p>
+</li>
+<li>
+<p>Upon successful authentication, students are directed to <code>student.html</code>, while teachers and principals are routed to <code>teacher.html</code>.</p>
+</li>
+</ol>
+<h2 id="usage-teacher-account-registration">Teacher Account Registration<a class="headerlink" href="#usage-teacher-account-registration" title="Permanent link">&para;</a></h2>
+<p>New teachers must register an account using a valid <strong>Teacher Registration Code</strong> generated by the School Principal:</p>
+<ol>
+<li>
+<p>Navigate to the login page (<code>login.html</code>) and select the <strong>Teacher</strong> tab.</p>
+</li>
+<li>
+<p>In the registration form (or by toggling to the register view), complete the required fields:</p>
+<ul>
+<li>
+<p><strong>First Name</strong> and <strong>Last Name</strong> (combined into Full Name)</p>
+</li>
+<li>
+<p><strong>Username</strong> (3 to 30 characters; letters, numbers, underscores, dots, or hyphens)</p>
+</li>
+<li>
+<p><strong>Email Address</strong> (optional, for contact records)</p>
+</li>
+<li>
+<p><strong>Password</strong> (minimum of 6 characters)</p>
+</li>
+<li>
+<p><strong>Confirm Password</strong> (must match password exactly)</p>
+</li>
+<li>
+<p><strong>Teacher Registration Code</strong> (16-character code in the format <code>FSL-XXXXXXXX-XXXXXXXX</code>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Click the <strong>Create Teacher Account</strong> button.</p>
+</li>
+<li>
+<p>The system validates the code against the database. If the code is active and unredeemed, your teacher account is created immediately and you are logged in to the Teacher Dashboard.</p>
+</li>
+</ol>
+<h2 id="usage-teacher-classroom-management">Teacher Classroom Management<a class="headerlink" href="#usage-teacher-classroom-management" title="Permanent link">&para;</a></h2>
 <p>Teachers organize their learners into distinct classrooms.</p>
-<p>### Creating a Classroom</p>
+<h3 id="usage-creating-a-classroom">Creating a Classroom<a class="headerlink" href="#usage-creating-a-classroom" title="Permanent link">&para;</a></h3>
 <p>Follow these steps to establish a new classroom:</p>
-<p>1. Log in to the Teacher Dashboard (<code>teacher.html</code>).</p>
-<p>2. Click **Classrooms** in the left sidebar navigation (<code>data-view="students"</code>).</p>
-<p>3. Click the **Create New Classroom** button (<code>openCreateModal()</code>).</p>
-<p>4. In the modal dialog:</p>
-<p>&#x20;   - Enter the **Classroom Name** (e.g., <code>Grade 1 - Daisy</code>).</p>
-<p>&#x20;   - Enter a brief **Description** (optional).</p>
-<p>5. Click **Create Classroom**.</p>
-<p>6. The system generates a unique 6-character alphanumeric **Classroom Code** (e.g., <code>QPELNG</code>) and displays the classroom in your directory.</p>
-<p>### Managing Classroom Details</p>
+<ol>
+<li>
+<p>Log in to the Teacher Dashboard (<code>teacher.html</code>).</p>
+</li>
+<li>
+<p>Click <strong>Classrooms</strong> in the left sidebar navigation (<code>data-view="students"</code>).</p>
+</li>
+<li>
+<p>Click the <strong>Create New Classroom</strong> button (<code>openCreateModal()</code>).</p>
+</li>
+<li>
+<p>In the modal dialog:</p>
+<ul>
+<li>
+<p>Enter the <strong>Classroom Name</strong> (e.g., <code>Grade 1 - Daisy</code>).</p>
+</li>
+<li>
+<p>Enter a brief <strong>Description</strong> (optional).</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Create Classroom</strong>.</p>
+</li>
+<li>
+<p>The system generates a unique 6-character alphanumeric <strong>Classroom Code</strong> (e.g., <code>QPELNG</code>) and displays the classroom in your directory.</p>
+</li>
+</ol>
+<h3 id="usage-managing-classroom-details">Managing Classroom Details<a class="headerlink" href="#usage-managing-classroom-details" title="Permanent link">&para;</a></h3>
 <p>Follow these steps to update or inspect a classroom:</p>
-<p>1. In the **Classrooms** list, click on any classroom card to open its detail view.</p>
-<p>2. To update the name or description, click the edit icon, update the fields, and click **Save Changes**.</p>
-<p>3. To view enrolled learners, scroll down to the **Classroom Learners** table.</p>
+<ol>
+<li>
+<p>In the <strong>Classrooms</strong> list, click on any classroom card to open its detail view.</p>
+</li>
+<li>
+<p>To update the name or description, click the edit icon, update the fields, and click <strong>Save Changes</strong>.</p>
+</li>
+<li>
+<p>To view enrolled learners, scroll down to the <strong>Classroom Learners</strong> table.</p>
+</li>
+</ol>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
+<p>Deleting a classroom is irreversible. Deleting a classroom permanently disassociates its enrolled students and deletes classroom-specific quiz results. Always ensure student records are backed up before removing a classroom.</p>
 </div>
-<p>&#x20;   Deleting a classroom is irreversible. Deleting a classroom permanently disassociates its enrolled students and deletes classroom-specific quiz results. Always ensure student records are backed up before removing a classroom.</p>
-<p>## Enrolling and Managing Learners</p>
+<h2 id="usage-enrolling-and-managing-learners">Enrolling and Managing Learners<a class="headerlink" href="#usage-enrolling-and-managing-learners" title="Permanent link">&para;</a></h2>
 <p>Teachers create student accounts directly inside their classrooms. Students do not self-register on the public landing page.</p>
-<p>### Adding a New Student to a Classroom</p>
+<h3 id="usage-adding-a-new-student-to-a-classroom">Adding a New Student to a Classroom<a class="headerlink" href="#usage-adding-a-new-student-to-a-classroom" title="Permanent link">&para;</a></h3>
 <p>Follow these steps to create and enroll a new student account:</p>
-<p>1. In the Teacher Dashboard, select **Classrooms** and click your desired classroom.</p>
-<p>2. Click the **Add Learner** button to launch the student creation modal.</p>
-<p>3. Complete the learner profile details:</p>
-<p>&#x20;   - **Full Name** (e.g., <code>Marian Marchan</code>)</p>
-<p>&#x20;   - **Username** (e.g., <code>marian10949</code>)</p>
-<p>&#x20;   - **Password** (temporary password for the pupil, at least 6 characters)</p>
-<p>&#x20;   - **Age** (e.g., <code>10</code>)</p>
-<p>&#x20;   - **Gender** (select <code>Boy</code>, <code>Girl</code>, <code>Male</code>, <code>Female</code>, or <code>Other</code>)</p>
-<p>4. Click **Save Learner**.</p>
-<p>5. The student is created in the database, assigned the <code>student</code> role, and enrolled into your classroom. Provide the username and temporary password to the student or their guardian.</p>
-<p>### Enrolling an Existing Learner</p>
+<ol>
+<li>
+<p>In the Teacher Dashboard, select <strong>Classrooms</strong> and click your desired classroom.</p>
+</li>
+<li>
+<p>Click the <strong>Add Learner</strong> button to launch the student creation modal.</p>
+</li>
+<li>
+<p>Complete the learner profile details:</p>
+<ul>
+<li>
+<p><strong>Full Name</strong> (e.g., <code>Marian Marchan</code>)</p>
+</li>
+<li>
+<p><strong>Username</strong> (e.g., <code>marian10949</code>)</p>
+</li>
+<li>
+<p><strong>Password</strong> (temporary password for the pupil, at least 6 characters)</p>
+</li>
+<li>
+<p><strong>Age</strong> (e.g., <code>10</code>)</p>
+</li>
+<li>
+<p><strong>Gender</strong> (select <code>Boy</code>, <code>Girl</code>, <code>Male</code>, <code>Female</code>, or <code>Other</code>)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Save Learner</strong>.</p>
+</li>
+<li>
+<p>The student is created in the database, assigned the <code>student</code> role, and enrolled into your classroom. Provide the username and temporary password to the student or their guardian.</p>
+</li>
+</ol>
+<h3 id="usage-enrolling-an-existing-learner">Enrolling an Existing Learner<a class="headerlink" href="#usage-enrolling-an-existing-learner" title="Permanent link">&para;</a></h3>
 <p>Follow these steps to link a student account to your classroom:</p>
-<p>1. If the pupil already has an account in the system and is not currently enrolled in any other classroom, open your classroom and click **Enroll Existing Learner**.</p>
-<p>2. Select or search for the learner by username or name.</p>
-<p>3. Click **Confirm Enrollment**. If the student is already enrolled in another classroom, an alert will notify you to resolve the transfer with the previous teacher first.</p>
-<p>## Student Learning Experience</p>
-<p>Students use the **FSL Lessons** portal to study Filipino Sign Language vocabulary:</p>
-<p>1. Log in as a student on <code>login.html</code>.</p>
-<p>2. Click **FSL Lessons** (<code>data-view="learn"</code>) in the left sidebar or bottom mobile bar.</p>
-<p>3. The screen presents three progressive learning tiers:</p>
-<p>&#x20;   - **Alphabet**: 26 letters of the FSL alphabet.</p>
-<p>&#x20;   - **Basic Vocabulary**: 15 categories (Numbers, Colors, Fruits, Vegetables, Animals, Food, etc.).</p>
-<p>&#x20;   - **Intermediate Vocabulary**: 9 categories (Occupations, Transportation, Emergencies, Community, etc.).</p>
-<p>4. Click on a level, then select a category card (e.g., <code>Colors</code> or <code>Everyday Greetings</code>).</p>
-<p>5. Click on an individual lesson card to open the **Lesson Viewer**:</p>
-<p>&#x20;   - Observe the high-definition animated sign demonstration GIF.</p>
-<p>&#x20;   - Read the English and Filipino vocabulary term.</p>
-<p>&#x20;   - Review the descriptive signing instructions and **Helpful Tips**.</p>
-<p>6. Practice the sign with your hand.</p>
-<p>7. Click the **Mark Lesson as Complete** button. The system updates your progress bar and awards completion credit.</p>
-<p>## Taking Module Mastery Quizzes</p>
+<ol>
+<li>
+<p>If the pupil already has an account in the system and is not currently enrolled in any other classroom, open your classroom and click <strong>Enroll Existing Learner</strong>.</p>
+</li>
+<li>
+<p>Select or search for the learner by username or name.</p>
+</li>
+<li>
+<p>Click <strong>Confirm Enrollment</strong>. If the student is already enrolled in another classroom, an alert will notify you to resolve the transfer with the previous teacher first.</p>
+</li>
+</ol>
+<h2 id="usage-student-learning-experience">Student Learning Experience<a class="headerlink" href="#usage-student-learning-experience" title="Permanent link">&para;</a></h2>
+<p>Students use the <strong>FSL Lessons</strong> portal to study Filipino Sign Language vocabulary:</p>
+<ol>
+<li>
+<p>Log in as a student on <code>login.html</code>.</p>
+</li>
+<li>
+<p>Click <strong>FSL Lessons</strong> (<code>data-view="learn"</code>) in the left sidebar or bottom mobile bar.</p>
+</li>
+<li>
+<p>The screen presents three progressive learning tiers:</p>
+<ul>
+<li>
+<p><strong>Alphabet</strong>: 26 letters of the FSL alphabet.</p>
+</li>
+<li>
+<p><strong>Basic Vocabulary</strong>: 15 categories (Numbers, Colors, Fruits, Vegetables, Animals, Food, etc.).</p>
+</li>
+<li>
+<p><strong>Intermediate Vocabulary</strong>: 9 categories (Occupations, Transportation, Emergencies, Community, etc.).</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Click on a level, then select a category card (e.g., <code>Colors</code> or <code>Everyday Greetings</code>).</p>
+</li>
+<li>
+<p>Click on an individual lesson card to open the <strong>Lesson Viewer</strong>:</p>
+<ul>
+<li>
+<p>Observe the high-definition animated sign demonstration GIF.</p>
+</li>
+<li>
+<p>Read the English and Filipino vocabulary term.</p>
+</li>
+<li>
+<p>Review the descriptive signing instructions and <strong>Helpful Tips</strong>.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Practice the sign with your hand.</p>
+</li>
+<li>
+<p>Click the <strong>Mark Lesson as Complete</strong> button. The system updates your progress bar and awards completion credit.</p>
+</li>
+</ol>
+<h2 id="usage-taking-module-mastery-quizzes">Taking Module Mastery Quizzes<a class="headerlink" href="#usage-taking-module-mastery-quizzes" title="Permanent link">&para;</a></h2>
 <p>Each learning level and category includes multiple-choice quizzes to evaluate sign comprehension:</p>
-<p>1. Navigate to **FSL Lessons** and scroll to the bottom of the module or category to find the quiz banner (e.g., **Alphabet Mastery Quiz**).</p>
-<p>2. Click **Start Quiz**.</p>
-<p>3. Read the prompt and examine the displayed sign image or question term.</p>
-<p>4. Click one of the multiple-choice options.</p>
-<p>5. The animated **Feedback Tray** slides up from the bottom of the screen:</p>
-<p>&#x20;   - A green tray with a checkmark indicates a **Correct** response.</p>
-<p>&#x20;   - A red tray indicates an **Incorrect** response and highlights the correct sign.</p>
-<p>6. Click **Continue** to move to the next question.</p>
-<p>7. Upon answering all questions, the quiz completion summary appears, displaying your total points, total questions, and percentage score.</p>
-<p>8. Scores meeting or exceeding 70% earn passing status and are recorded in the database under <code>quiz\_results</code>.</p>
-<p>## Teacher "Sign \&amp; Spell" Live Alphabet Recognition</p>
+<ol>
+<li>
+<p>Navigate to <strong>FSL Lessons</strong> and scroll to the bottom of the module or category to find the quiz banner (e.g., <strong>Alphabet Mastery Quiz</strong>).</p>
+</li>
+<li>
+<p>Click <strong>Start Quiz</strong>.</p>
+</li>
+<li>
+<p>Read the prompt and examine the displayed sign image or question term.</p>
+</li>
+<li>
+<p>Click one of the multiple-choice options.</p>
+</li>
+<li>
+<p>The animated <strong>Feedback Tray</strong> slides up from the bottom of the screen:</p>
+<ul>
+<li>
+<p>A green tray with a checkmark indicates a <strong>Correct</strong> response.</p>
+</li>
+<li>
+<p>A red tray indicates an <strong>Incorrect</strong> response and highlights the correct sign.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Continue</strong> to move to the next question.</p>
+</li>
+<li>
+<p>Upon answering all questions, the quiz completion summary appears, displaying your total points, total questions, and percentage score.</p>
+</li>
+<li>
+<p>Scores meeting or exceeding 70% earn passing status and are recorded in the database under <code>quiz_results</code>.</p>
+</li>
+</ol>
+<h2 id="usage-teacher-sign-spell-live-alphabet-recognition">Teacher "Sign &amp; Spell" Live Alphabet Recognition<a class="headerlink" href="#usage-teacher-sign-spell-live-alphabet-recognition" title="Permanent link">&para;</a></h2>
 <p>Teachers can demonstrate and practice signs live in front of the class using the integrated AI computer vision tool:</p>
-<p>1. Log in to the Teacher Dashboard (<code>teacher.html</code>).</p>
-<p>2. Click **Sign and Spell** in the sidebar navigation (<code>data-view="sign-spell"</code>).</p>
-<p>3. Click the **Start Camera** button. When prompted by your browser, click **Allow** to grant webcam access.</p>
-<p>4. Position yourself so your upper body and hands are visible inside the video frame.</p>
-<p>5. Raise your dominant hand facing the camera. The MediaPipe hand tracker draws landmark connections across your hand joints.</p>
-<p>6. Form an FSL alphabet letter (e.g., <code>A</code>, <code>B</code>, or <code>C</code>).</p>
-<p>7. The system transmits the 63 normalized coordinates to the local ML service (<code>http://127.0.0.1:8000/api/recognize</code>).</p>
-<p>8. The predicted letter and confidence score appear in real time on the live recognition display.</p>
-<p>9. To conclude the demonstration, click **Stop Camera**.</p>
+<ol>
+<li>
+<p>Log in to the Teacher Dashboard (<code>teacher.html</code>).</p>
+</li>
+<li>
+<p>Click <strong>Sign and Spell</strong> in the sidebar navigation (<code>data-view="sign-spell"</code>).</p>
+</li>
+<li>
+<p>Click the <strong>Start Camera</strong> button. When prompted by your browser, click <strong>Allow</strong> to grant webcam access.</p>
+</li>
+<li>
+<p>Position yourself so your upper body and hands are visible inside the video frame.</p>
+</li>
+<li>
+<p>Raise your dominant hand facing the camera. The MediaPipe hand tracker draws landmark connections across your hand joints.</p>
+</li>
+<li>
+<p>Form an FSL alphabet letter (e.g., <code>A</code>, <code>B</code>, or <code>C</code>).</p>
+</li>
+<li>
+<p>The system transmits the 63 normalized coordinates to the local ML service (<code>http://127.0.0.1:8000/api/recognize</code>).</p>
+</li>
+<li>
+<p>The predicted letter and confidence score appear in real time on the live recognition display.</p>
+</li>
+<li>
+<p>To conclude the demonstration, click <strong>Stop Camera</strong>.</p>
+</li>
+</ol>
 <p>Below is a sample API request payload transmitted to the machine learning service during recognition:</p>
 <div class="language-json highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#usage-__codelineno-0-1"></a><span class="p">{</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#usage-__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#usage-__codelineno-0-3"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w"> </span><span class="nt">"landmarks"</span><span class="p">:</span><span class="w"> </span><span class="err">\</span><span class="p">[</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#usage-__codelineno-0-3"></a><span class="w">  </span><span class="nt">"landmarks"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#usage-__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#usage-__codelineno-0-5"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.542</span><span class="p">,</span><span class="w"> </span><span class="mf">0.721</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.001</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#usage-__codelineno-0-5"></a><span class="w">    </span><span class="mf">0.542</span><span class="p">,</span><span class="w"> </span><span class="mf">0.721</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.001</span><span class="p">,</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#usage-__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#usage-__codelineno-0-7"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.498</span><span class="p">,</span><span class="w"> </span><span class="mf">0.684</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.015</span><span class="p">,</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#usage-__codelineno-0-7"></a><span class="w">    </span><span class="mf">0.498</span><span class="p">,</span><span class="w"> </span><span class="mf">0.684</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.015</span><span class="p">,</span>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#usage-__codelineno-0-8"></a>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#usage-__codelineno-0-9"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.472</span><span class="p">,</span><span class="w"> </span><span class="mf">0.612</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.024</span><span class="p">,</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#usage-__codelineno-0-9"></a><span class="w">    </span><span class="mf">0.472</span><span class="p">,</span><span class="w"> </span><span class="mf">0.612</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.024</span><span class="p">,</span>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#usage-__codelineno-0-10"></a>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#usage-__codelineno-0-11"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.461</span><span class="p">,</span><span class="w"> </span><span class="mf">0.545</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.031</span><span class="p">,</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#usage-__codelineno-0-11"></a><span class="w">    </span><span class="mf">0.461</span><span class="p">,</span><span class="w"> </span><span class="mf">0.545</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.031</span><span class="p">,</span>
 </span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#usage-__codelineno-0-12"></a>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#usage-__codelineno-0-13"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.450</span><span class="p">,</span><span class="w"> </span><span class="mf">0.490</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.038</span><span class="p">,</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#usage-__codelineno-0-13"></a><span class="w">    </span><span class="mf">0.450</span><span class="p">,</span><span class="w"> </span><span class="mf">0.490</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.038</span><span class="p">,</span>
 </span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#usage-__codelineno-0-14"></a>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#usage-__codelineno-0-15"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.512</span><span class="p">,</span><span class="w"> </span><span class="mf">0.485</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.012</span><span class="p">,</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#usage-__codelineno-0-15"></a><span class="w">    </span><span class="mf">0.512</span><span class="p">,</span><span class="w"> </span><span class="mf">0.485</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.012</span><span class="p">,</span>
 </span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#usage-__codelineno-0-16"></a>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#usage-__codelineno-0-17"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.518</span><span class="p">,</span><span class="w"> </span><span class="mf">0.420</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.022</span><span class="p">,</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#usage-__codelineno-0-17"></a><span class="w">    </span><span class="mf">0.518</span><span class="p">,</span><span class="w"> </span><span class="mf">0.420</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.022</span><span class="p">,</span>
 </span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#usage-__codelineno-0-18"></a>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#usage-__codelineno-0-19"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.522</span><span class="p">,</span><span class="w"> </span><span class="mf">0.380</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.029</span><span class="p">,</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#usage-__codelineno-0-19"></a><span class="w">    </span><span class="mf">0.522</span><span class="p">,</span><span class="w"> </span><span class="mf">0.380</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.029</span><span class="p">,</span>
 </span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#usage-__codelineno-0-20"></a>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#usage-__codelineno-0-21"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.525</span><span class="p">,</span><span class="w"> </span><span class="mf">0.345</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.035</span><span class="p">,</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#usage-__codelineno-0-21"></a><span class="w">    </span><span class="mf">0.525</span><span class="p">,</span><span class="w"> </span><span class="mf">0.345</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.035</span><span class="p">,</span>
 </span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#usage-__codelineno-0-22"></a>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#usage-__codelineno-0-23"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.545</span><span class="p">,</span><span class="w"> </span><span class="mf">0.495</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.010</span><span class="p">,</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#usage-__codelineno-0-23"></a><span class="w">    </span><span class="mf">0.545</span><span class="p">,</span><span class="w"> </span><span class="mf">0.495</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.010</span><span class="p">,</span>
 </span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#usage-__codelineno-0-24"></a>
-</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#usage-__codelineno-0-25"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.552</span><span class="p">,</span><span class="w"> </span><span class="mf">0.435</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.020</span><span class="p">,</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#usage-__codelineno-0-25"></a><span class="w">    </span><span class="mf">0.552</span><span class="p">,</span><span class="w"> </span><span class="mf">0.435</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.020</span><span class="p">,</span>
 </span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#usage-__codelineno-0-26"></a>
-</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#usage-__codelineno-0-27"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.556</span><span class="p">,</span><span class="w"> </span><span class="mf">0.395</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.027</span><span class="p">,</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#usage-__codelineno-0-27"></a><span class="w">    </span><span class="mf">0.556</span><span class="p">,</span><span class="w"> </span><span class="mf">0.395</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.027</span><span class="p">,</span>
 </span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28" href="#usage-__codelineno-0-28"></a>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#usage-__codelineno-0-29"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.558</span><span class="p">,</span><span class="w"> </span><span class="mf">0.360</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.033</span><span class="p">,</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29" href="#usage-__codelineno-0-29"></a><span class="w">    </span><span class="mf">0.558</span><span class="p">,</span><span class="w"> </span><span class="mf">0.360</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.033</span><span class="p">,</span>
 </span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30" href="#usage-__codelineno-0-30"></a>
-</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#usage-__codelineno-0-31"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.575</span><span class="p">,</span><span class="w"> </span><span class="mf">0.515</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.012</span><span class="p">,</span>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31" href="#usage-__codelineno-0-31"></a><span class="w">    </span><span class="mf">0.575</span><span class="p">,</span><span class="w"> </span><span class="mf">0.515</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.012</span><span class="p">,</span>
 </span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32" href="#usage-__codelineno-0-32"></a>
-</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#usage-__codelineno-0-33"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.582</span><span class="p">,</span><span class="w"> </span><span class="mf">0.465</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.021</span><span class="p">,</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33" href="#usage-__codelineno-0-33"></a><span class="w">    </span><span class="mf">0.582</span><span class="p">,</span><span class="w"> </span><span class="mf">0.465</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.021</span><span class="p">,</span>
 </span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34" href="#usage-__codelineno-0-34"></a>
-</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#usage-__codelineno-0-35"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.585</span><span class="p">,</span><span class="w"> </span><span class="mf">0.430</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.028</span><span class="p">,</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35" href="#usage-__codelineno-0-35"></a><span class="w">    </span><span class="mf">0.585</span><span class="p">,</span><span class="w"> </span><span class="mf">0.430</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.028</span><span class="p">,</span>
 </span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36" href="#usage-__codelineno-0-36"></a>
-</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#usage-__codelineno-0-37"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.587</span><span class="p">,</span><span class="w"> </span><span class="mf">0.400</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.034</span><span class="p">,</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37" href="#usage-__codelineno-0-37"></a><span class="w">    </span><span class="mf">0.587</span><span class="p">,</span><span class="w"> </span><span class="mf">0.400</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.034</span><span class="p">,</span>
 </span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38" href="#usage-__codelineno-0-38"></a>
-</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#usage-__codelineno-0-39"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.605</span><span class="p">,</span><span class="w"> </span><span class="mf">0.545</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.015</span><span class="p">,</span>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39" href="#usage-__codelineno-0-39"></a><span class="w">    </span><span class="mf">0.605</span><span class="p">,</span><span class="w"> </span><span class="mf">0.545</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.015</span><span class="p">,</span>
 </span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40" href="#usage-__codelineno-0-40"></a>
-</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#usage-__codelineno-0-41"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.615</span><span class="p">,</span><span class="w"> </span><span class="mf">0.505</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.024</span><span class="p">,</span>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41" href="#usage-__codelineno-0-41"></a><span class="w">    </span><span class="mf">0.615</span><span class="p">,</span><span class="w"> </span><span class="mf">0.505</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.024</span><span class="p">,</span>
 </span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42" href="#usage-__codelineno-0-42"></a>
-</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#usage-__codelineno-0-43"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.620</span><span class="p">,</span><span class="w"> </span><span class="mf">0.475</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.030</span><span class="p">,</span>
+</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43" href="#usage-__codelineno-0-43"></a><span class="w">    </span><span class="mf">0.620</span><span class="p">,</span><span class="w"> </span><span class="mf">0.475</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.030</span><span class="p">,</span>
 </span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44" href="#usage-__codelineno-0-44"></a>
-</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45" href="#usage-__codelineno-0-45"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w">   </span><span class="mf">0.622</span><span class="p">,</span><span class="w"> </span><span class="mf">0.450</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.035</span>
+</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45" href="#usage-__codelineno-0-45"></a><span class="w">    </span><span class="mf">0.622</span><span class="p">,</span><span class="w"> </span><span class="mf">0.450</span><span class="p">,</span><span class="w"> </span><span class="mf">-0.035</span>
 </span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46" href="#usage-__codelineno-0-46"></a>
-</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47" href="#usage-__codelineno-0-47"></a><span class="err">&amp;#x</span><span class="mi">20</span><span class="err">;</span><span class="w"> </span><span class="p">]</span>
+</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47" href="#usage-__codelineno-0-47"></a><span class="w">  </span><span class="p">]</span>
 </span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48" href="#usage-__codelineno-0-48"></a>
 </span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49" href="#usage-__codelineno-0-49"></a><span class="p">}</span>
 </span></code></pre></div>
-<p>## Principal Code Generator</p>
+<h2 id="usage-principal-code-generator">Principal Code Generator<a class="headerlink" href="#usage-principal-code-generator" title="Permanent link">&para;</a></h2>
 <p>The School Principal is the sole authority permitted to issue Teacher Registration Codes:</p>
-<p>1. Log in with the protected Principal account (<code>username: principal</code>).</p>
-<p>2. Click **Code Generator** in the sidebar navigation (<code>data-view="code"</code>).</p>
-<p>3. In the security check modal, re-enter your **Principal Password** to confirm your identity.</p>
-<p>4. Select the code **Expiration Window**:</p>
-<p>&#x20;   - <code>24 Hours</code></p>
-<p>&#x20;   - <code>7 Days</code></p>
-<p>&#x20;   - <code>30 Days</code></p>
-<p>&#x20;   - <code>Never Expire</code> [TODO: confirm]</p>
-<p>5. Click **Generate Code**.</p>
-<p>6. The system creates a new 16-character code (e.g., <code>FSL-3A9F1C2B-E04D7A6F</code>) and adds it to the **Active Registration Codes** table.</p>
-<p>7. Click the **Copy Code** button next to the entry to copy it to your clipboard and deliver it to the onboarding teacher.</p>
-<p>## Principal Reports \&amp; School Analytics</p>
+<ol>
+<li>
+<p>Log in with the protected Principal account (<code>username: principal</code>).</p>
+</li>
+<li>
+<p>Click <strong>Code Generator</strong> in the sidebar navigation (<code>data-view="code"</code>).</p>
+</li>
+<li>
+<p>In the security check modal, re-enter your <strong>Principal Password</strong> to confirm your identity.</p>
+</li>
+<li>
+<p>Select the code <strong>Expiration Window</strong>:</p>
+<ul>
+<li>
+<p><code>24 Hours</code></p>
+</li>
+<li>
+<p><code>7 Days</code></p>
+</li>
+<li>
+<p><code>30 Days</code></p>
+</li>
+<li>
+<p><code>Never Expire</code> [TODO: confirm]</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Generate Code</strong>.</p>
+</li>
+<li>
+<p>The system creates a new 16-character code (e.g., <code>FSL-3A9F1C2B-E04D7A6F</code>) and adds it to the <strong>Active Registration Codes</strong> table.</p>
+</li>
+<li>
+<p>Click the <strong>Copy Code</strong> button next to the entry to copy it to your clipboard and deliver it to the onboarding teacher.</p>
+</li>
+</ol>
+<h2 id="usage-principal-reports-school-analytics">Principal Reports &amp; School Analytics<a class="headerlink" href="#usage-principal-reports-school-analytics" title="Permanent link">&para;</a></h2>
 <p>The Principal monitors school-wide learning metrics and generates printable documentation for school records:</p>
-<p>1. In the Principal Dashboard, click **Report** in the sidebar navigation (<code>data-view="report"</code>).</p>
-<p>2. Select one of the three primary report types:</p>
-<p>&#x20;   - **Teachers Report**: List of registered teachers, assigned classrooms, and total enrolled pupils.</p>
-<p>&#x20;   - **Students Report**: Roster of students with completed lesson counts, average quiz scores, and last active dates.</p>
-<p>&#x20;   - **Overall Learning Progress Report**: School-wide breakdown across Alphabet, Basic, and Intermediate categories.</p>
-<p>3. Use the top filter controls to narrow data by **School Year** [TODO: confirm], **Grade Level**, or **Section**.</p>
-<p>4. To save an official copy, click **Export PDF**. The browser compiles the report using jsPDF and AutoTable and initiates an immediate file download.</p>
-<p>5. To export raw spreadsheet data, click **Export CSV**.</p>
-<p>## Profile Management and Logging Out</p>
+<ol>
+<li>
+<p>In the Principal Dashboard, click <strong>Report</strong> in the sidebar navigation (<code>data-view="report"</code>).</p>
+</li>
+<li>
+<p>Select one of the three primary report types:</p>
+<ul>
+<li>
+<p><strong>Teachers Report</strong>: List of registered teachers, assigned classrooms, and total enrolled pupils.</p>
+</li>
+<li>
+<p><strong>Students Report</strong>: Roster of students with completed lesson counts, average quiz scores, and last active dates.</p>
+</li>
+<li>
+<p><strong>Overall Learning Progress Report</strong>: School-wide breakdown across Alphabet, Basic, and Intermediate categories.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Use the top filter controls to narrow data by <strong>School Year</strong> [TODO: confirm], <strong>Grade Level</strong>, or <strong>Section</strong>.</p>
+</li>
+<li>
+<p>To save an official copy, click <strong>Export PDF</strong>. The browser compiles the report using jsPDF and AutoTable and initiates an immediate file download.</p>
+</li>
+<li>
+<p>To export raw spreadsheet data, click <strong>Export CSV</strong>.</p>
+</li>
+</ol>
+<h2 id="usage-profile-management-and-logging-out">Profile Management and Logging Out<a class="headerlink" href="#usage-profile-management-and-logging-out" title="Permanent link">&para;</a></h2>
 <p>Users can update their personal profile information and terminate sessions securely.</p>
-<p>### Updating Profile Details</p>
+<h3 id="usage-updating-profile-details">Updating Profile Details<a class="headerlink" href="#usage-updating-profile-details" title="Permanent link">&para;</a></h3>
 <p>Follow these steps to modify your user account:</p>
-<p>1. Click the **Profile** button at the bottom of the sidebar.</p>
-<p>2. Update your **Full Name** or contact **Email**.</p>
-<p>3. To upload a personal picture, click **Upload Avatar**, select a JPEG or PNG image from your computer, and save.</p>
-<p>4. To change your password, enter your current password, type your new password, and click **Update Password**.</p>
-<p>### Logging Out</p>
+<ol>
+<li>
+<p>Click the <strong>Profile</strong> button at the bottom of the sidebar.</p>
+</li>
+<li>
+<p>Update your <strong>Full Name</strong> or contact <strong>Email</strong>.</p>
+</li>
+<li>
+<p>To upload a personal picture, click <strong>Upload Avatar</strong>, select a JPEG or PNG image from your computer, and save.</p>
+</li>
+<li>
+<p>To change your password, enter your current password, type your new password, and click <strong>Update Password</strong>.</p>
+</li>
+</ol>
+<h3 id="usage-logging-out">Logging Out<a class="headerlink" href="#usage-logging-out" title="Permanent link">&para;</a></h3>
 <p>Follow these steps to end your session:</p>
-<p>1. Click the **Logout** button located in the sidebar or mobile menu.</p>
-<p>2. In the **Log Out?** confirmation modal, click **Log Out** to confirm.</p>
-<p>3. The platform clears session tokens and redirects you to <code>login.html</code>.</p>
-<p>For assistance troubleshooting common login or runtime errors, see the [Troubleshooting Guide](troubleshooting.md).</p></section><section class="print-page" id="troubleshooting" heading-number="4"><p># Troubleshooting and Diagnostics</p>
-<p>This guide provides solutions for common issues encountered when setting up, running, or using the **FSL Learn** platform.</p>
+<ol>
+<li>
+<p>Click the <strong>Logout</strong> button located in the sidebar or mobile menu.</p>
+</li>
+<li>
+<p>In the <strong>Log Out?</strong> confirmation modal, click <strong>Log Out</strong> to confirm.</p>
+</li>
+<li>
+<p>The platform clears session tokens and redirects you to <code>login.html</code>.</p>
+</li>
+</ol>
+<p>For assistance troubleshooting common login or runtime errors, see the <a href="#troubleshooting">Troubleshooting Guide</a>.</p></section><section class="print-page" id="troubleshooting" heading-number="4"><h1 id="troubleshooting-troubleshooting-and-diagnostics">Troubleshooting and Diagnostics<a class="headerlink" href="#troubleshooting-troubleshooting-and-diagnostics" title="Permanent link">&para;</a></h1>
+<p>This guide provides solutions for common issues encountered when setting up, running, or using the <strong>FSL Learn</strong> platform.</p>
 <p>Follow the numbered diagnostic and repair steps in each section to resolve problems quickly.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
+<p>If you encounter an unexpected error or an issue not covered in this guide, record the exact error text, the browser console output (<strong>F12 &gt; Console</strong>), and the server terminal logs, then contact the development team or your school IT administrator.</p>
 </div>
-<p>&#x20;   If you encounter an unexpected error or an issue not covered in this guide, record the exact error text, the browser console output (**F12 &gt; Console**), and the server terminal logs, then contact the development team or your school IT administrator.</p>
-<p>## Common Problems and Fixes</p>
-<p>### Problem 1: Database Connection Failed (<code>PDOException \[2002]</code>)</p>
-<p>**Symptom**: When loading the website or submitting the login form, the application displays an error: *"Database connection failed"*, *"SQLSTATE[HY000] [2002] Connection refused"*, or an HTTP <code>500 Internal Server Error</code>.</p>
-<p>**Cause**: The MySQL database service is stopped, running on a non-standard port, or the database credentials in <code>backend/php/config.php</code> do not match your MySQL server settings.</p>
-<p>**Fix**:</p>
-<p>1. Open the **Laragon** control panel (or XAMPP control panel).</p>
-<p>2. Check the **MySQL** service indicator. If it is stopped, click **Start All** (or **Start** next to MySQL).</p>
-<p>3. Confirm that MySQL is listening on port <code>3306</code>. If MySQL is running on another port (such as <code>3307</code>), update the port in <code>backend/php/config.php</code> or set the environment variable <code>DB\_PORT=3307</code>.</p>
-<p>4. Verify that the database <code>fsl\_learn</code> exists. Open HeidiSQL or phpMyAdmin, log in with host <code>127.0.0.1</code>, user <code>root</code>, and empty password (or your configured root password), and verify the database is listed.</p>
-<p>5. Check <code>backend/php/config.php</code> to ensure the credentials match your server configuration:</p>
-<div class="language-ini highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#troubleshooting-__codelineno-0-1"></a><span class="na">DB\_HOST</span><span class="o">=</span><span class="s">127.0.0.1</span>
+<h2 id="troubleshooting-common-problems-and-fixes">Common Problems and Fixes<a class="headerlink" href="#troubleshooting-common-problems-and-fixes" title="Permanent link">&para;</a></h2>
+<h3 id="troubleshooting-problem-1-database-connection-failed-pdoexception-2002">Problem 1: Database Connection Failed (<code>PDOException [2002]</code>)<a class="headerlink" href="#troubleshooting-problem-1-database-connection-failed-pdoexception-2002" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom</strong>: When loading the website or submitting the login form, the application displays an error: <em>"Database connection failed"</em>, <em>"SQLSTATE[HY000] [2002] Connection refused"</em>, or an HTTP <code>500 Internal Server Error</code>.</p>
+<p><strong>Cause</strong>: The MySQL database service is stopped, running on a non-standard port, or the database credentials in <code>backend/php/config.php</code> do not match your MySQL server settings.</p>
+<p><strong>Fix</strong>:</p>
+<ol>
+<li>
+<p>Open the <strong>Laragon</strong> control panel (or XAMPP control panel).</p>
+</li>
+<li>
+<p>Check the <strong>MySQL</strong> service indicator. If it is stopped, click <strong>Start All</strong> (or <strong>Start</strong> next to MySQL).</p>
+</li>
+<li>
+<p>Confirm that MySQL is listening on port <code>3306</code>. If MySQL is running on another port (such as <code>3307</code>), update the port in <code>backend/php/config.php</code> or set the environment variable <code>DB_PORT=3307</code>.</p>
+</li>
+<li>
+<p>Verify that the database <code>fsl_learn</code> exists. Open HeidiSQL or phpMyAdmin, log in with host <code>127.0.0.1</code>, user <code>root</code>, and empty password (or your configured root password), and verify the database is listed.</p>
+</li>
+<li>
+<p>Check <code>backend/php/config.php</code> to ensure the credentials match your server configuration:</p>
+</li>
+</ol>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#troubleshooting-__codelineno-0-1"></a><span class="na">DB_HOST</span><span class="o">=</span><span class="s">127.0.0.1</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#troubleshooting-__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#troubleshooting-__codelineno-0-3"></a><span class="na">DB\_PORT</span><span class="o">=</span><span class="s">3306</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#troubleshooting-__codelineno-0-3"></a><span class="na">DB_PORT</span><span class="o">=</span><span class="s">3306</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#troubleshooting-__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#troubleshooting-__codelineno-0-5"></a><span class="na">DB\_USER</span><span class="o">=</span><span class="s">root</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#troubleshooting-__codelineno-0-5"></a><span class="na">DB_USER</span><span class="o">=</span><span class="s">root</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#troubleshooting-__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#troubleshooting-__codelineno-0-7"></a><span class="na">DB\_PASS</span><span class="o">=</span><span class="s">your\_password\_here</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#troubleshooting-__codelineno-0-7"></a><span class="na">DB_PASS</span><span class="o">=</span><span class="s">your_password_here</span>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#troubleshooting-__codelineno-0-8"></a>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#troubleshooting-__codelineno-0-9"></a><span class="na">DB\_NAME</span><span class="o">=</span><span class="s">fsl\_learn</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#troubleshooting-__codelineno-0-9"></a><span class="na">DB_NAME</span><span class="o">=</span><span class="s">fsl_learn</span>
 </span></code></pre></div>
-<p>6. Refresh the web application in your browser.</p>
-<p>---</p>
-<p>### Problem 2: Sign Recognition Service Offline (<code>HTTP 8000 Connection Error</code>)</p>
-<p>**Symptom**: In the Teacher Dashboard under **Sign and Spell** (or student practice), the webcam starts, but hand signs are never recognized or classified. The browser developer console reports: <code>Failed to load resource: net::ERR\_CONNECTION\_REFUSED http://127.0.0.1:8000/api/recognize</code>.</p>
-<p>**Cause**: The Python FastAPI ML service (<code>backend/run.py</code>) is not running, the Python virtual environment is not activated, or port <code>8000</code> is blocked or in use by another program.</p>
-<p>**Fix**:</p>
-<p>1. Open a new terminal or command prompt window.</p>
-<p>2. Navigate to the <code>backend/</code> folder of the project:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#troubleshooting-__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>C:<span class="se">\\</span>Users<span class="se">\\</span>dexte<span class="se">\\</span>Documents<span class="se">\\</span>GitHub<span class="se">\\</span>FINAL-FSL<span class="se">\\</span>backend
+<ol>
+<li>Refresh the web application in your browser.</li>
+</ol>
+<hr />
+<h3 id="troubleshooting-problem-2-sign-recognition-service-offline-http-8000-connection-error">Problem 2: Sign Recognition Service Offline (<code>HTTP 8000 Connection Error</code>)<a class="headerlink" href="#troubleshooting-problem-2-sign-recognition-service-offline-http-8000-connection-error" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom</strong>: In the Teacher Dashboard under <strong>Sign and Spell</strong> (or student practice), the webcam starts, but hand signs are never recognized or classified. The browser developer console reports: <code>Failed to load resource: net::ERR_CONNECTION_REFUSED http://127.0.0.1:8000/api/recognize</code>.</p>
+<p><strong>Cause</strong>: The Python FastAPI ML service (<code>backend/run.py</code>) is not running, the Python virtual environment is not activated, or port <code>8000</code> is blocked or in use by another program.</p>
+<p><strong>Fix</strong>:</p>
+<ol>
+<li>
+<p>Open a new terminal or command prompt window.</p>
+</li>
+<li>
+<p>Navigate to the <code>backend/</code> folder of the project:</p>
+</li>
+</ol>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#troubleshooting-__codelineno-1-1"></a><span class="nb">cd</span><span class="w"> </span>C:<span class="se">\U</span>sers<span class="se">\d</span>exte<span class="se">\D</span>ocuments<span class="se">\G</span>itHub<span class="se">\F</span>INAL-FSL<span class="se">\b</span>ackend
 </span></code></pre></div>
-<p>3. Activate the virtual environment:</p>
-<div class="language-bat highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#troubleshooting-__codelineno-2-1"></a>.\\venv\\Scripts\\activate
+<ol>
+<li>Activate the virtual environment:</li>
+</ol>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#troubleshooting-__codelineno-2-1"></a>.\venv\Scripts\activate
 </span></code></pre></div>
-<p>4. Start the machine learning service:</p>
+<ol>
+<li>Start the machine learning service:</li>
+</ol>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#troubleshooting-__codelineno-3-1"></a>python<span class="w"> </span>run.py
 </span></code></pre></div>
-<p>5. Test the service health using curl in another terminal:</p>
+<ol>
+<li>Test the service health using curl in another terminal:</li>
+</ol>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#troubleshooting-__codelineno-4-1"></a>curl<span class="w"> </span>-i<span class="w"> </span>http://127.0.0.1:8000/api/health
 </span></code></pre></div>
-<p>6. If port <code>8000</code> is occupied by another application, identify and terminate the conflicting process:</p>
+<ol>
+<li>If port <code>8000</code> is occupied by another application, identify and terminate the conflicting process:</li>
+</ol>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#troubleshooting-__codelineno-5-1"></a>netstat<span class="w"> </span>-ano<span class="w"> </span><span class="p">|</span><span class="w"> </span>findstr<span class="w"> </span>:8000
 </span></code></pre></div>
-<p>7. Locate the PID from the rightmost column and stop it in Windows Task Manager.</p>
-<p>---</p>
-<p>### Problem 3: Invalid or Expired Teacher Registration Code</p>
-<p>**Symptom**: During teacher registration on <code>login.html</code>, the form fails with the error message: *"Invalid Teacher Registration Code. Please check the code and try again."* or *"This Teacher Registration Code has expired. Please request a new code from the Principal."*</p>
-<p>**Cause**: The entered code was mistyped, already redeemed by another teacher, or the code's expiration timestamp (<code>expires\_at</code>) has passed.</p>
-<p>**Fix**:</p>
-<p>1. Verify that the registration code follows the exact format: <code>FSL-XXXXXXXX-XXXXXXXX</code> (16 hexadecimal characters separated by hyphens).</p>
-<p>2. Ensure no leading or trailing whitespace was accidentally copied.</p>
-<p>3. Have the School Principal log in to <code>teacher.html</code> using the principal credentials.</p>
-<p>4. In the Principal Dashboard, click **Code Generator** (<code>data-view="code"</code>).</p>
-<p>5. Review the **Teacher Registration Codes** table:</p>
-<p>&#x20;   - If the code shows <code>is\_used = Yes</code>, it has already been redeemed.</p>
-<p>&#x20;   - If the code shows <code>Expired</code>, its validity window has elapsed.</p>
-<p>6. The Principal should generate a fresh code and provide it to the teacher. Refer to the [Code Generator section in the User Guide](usage.md#principal-code-generator).</p>
-<p>---</p>
-<p>### Problem 4: Learner Enrollment Conflict (<code>Single Classroom Restriction</code>)</p>
-<p>**Symptom**: When a teacher attempts to add or enroll a student, the system returns an HTTP <code>409 Conflict</code> error: *"This learner is already enrolled in classroom 'Grade 1 - Daisy'. Each student can only belong to one classroom at a time."*</p>
-<p>**Cause**: The database constraint <code>uq\_student</code> on table <code>classroom\_members</code> strictly prevents a student from being registered in more than one classroom concurrently.</p>
-<p>**Fix**:</p>
-<p>1. Identify the student's current classroom by consulting the previous teacher or asking the Principal to review the **Students Report** (<code>data-view="report"</code>).</p>
-<p>2. Have the previous teacher open their classroom in <code>teacher.html</code>, locate the learner in the roster, and remove the student from that classroom.</p>
-<p>3. Once unassigned, the new teacher can immediately enroll the learner using the **Enroll Existing Learner** option.</p>
-<p>---</p>
-<p>### Problem 5: Webcam Feed Is Black or Camera Access Denied</p>
-<p>**Symptom**: When opening **Sign and Spell**, the camera box remains completely black, or a browser pop-up displays <code>NotAllowedError: Permission denied</code>.</p>
-<p>**Cause**: The browser blocked webcam access, camera permissions were dismissed, or another video conferencing application (Zoom, Microsoft Teams, Google Meet) has locked the webcam hardware.</p>
-<p>**Fix**:</p>
-<p>1. In Google Chrome or Microsoft Edge, look at the URL address bar. Click the **Camera Settings** icon on the left side of the address bar.</p>
-<p>2. Change the camera permission from **Block** to **Allow**.</p>
-<p>3. Close any external applications that might be using your webcam (e.g., Zoom, OBS, Teams).</p>
-<p>4. Refresh the webpage (<code>F5</code> or <code>Ctrl+F5</code>).</p>
-<p>5. Ensure the room has adequate front-facing lighting so MediaPipe can detect hand landmarks accurately against your background.</p>
-<p>---</p>
-<p>### Problem 6: API Requests Return HTTP 404 Not Found (<code>Apache mod\_rewrite</code>)</p>
-<p>**Symptom**: Frontend network requests to <code>/fsl\_learn/api/auth/login</code> or <code>/fsl\_learn/api/classrooms</code> fail with HTTP <code>404 Not Found</code>.</p>
-<p>**Cause**: Apache's <code>mod\_rewrite</code> module is disabled, or the <code>.htaccess</code> file was not copied into the web root directory during file deployment.</p>
-<p>**Fix**:</p>
-<p>1. Verify that the <code>.htaccess</code> file exists in <code>C:\\laragon\\www\\fsl\_learn\\.htaccess</code>. If missing, copy it from <code>backend/php/.htaccess</code>:</p>
-<div class="language-bat highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#troubleshooting-__codelineno-6-1"></a><span class="k">copy</span> C:\\Users\\dexte\\Documents\\GitHub\\FINAL-FSL\\backend\\php\\.htaccess C:\\laragon\\www\\fsl\_learn\\.htaccess
+<ol>
+<li>Locate the PID from the rightmost column and stop it in Windows Task Manager.</li>
+</ol>
+<hr />
+<h3 id="troubleshooting-problem-3-invalid-or-expired-teacher-registration-code">Problem 3: Invalid or Expired Teacher Registration Code<a class="headerlink" href="#troubleshooting-problem-3-invalid-or-expired-teacher-registration-code" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom</strong>: During teacher registration on <code>login.html</code>, the form fails with the error message: <em>"Invalid Teacher Registration Code. Please check the code and try again."</em> or <em>"This Teacher Registration Code has expired. Please request a new code from the Principal."</em></p>
+<p><strong>Cause</strong>: The entered code was mistyped, already redeemed by another teacher, or the code's expiration timestamp (<code>expires_at</code>) has passed.</p>
+<p><strong>Fix</strong>:</p>
+<ol>
+<li>
+<p>Verify that the registration code follows the exact format: <code>FSL-XXXXXXXX-XXXXXXXX</code> (16 hexadecimal characters separated by hyphens).</p>
+</li>
+<li>
+<p>Ensure no leading or trailing whitespace was accidentally copied.</p>
+</li>
+<li>
+<p>Have the School Principal log in to <code>teacher.html</code> using the principal credentials.</p>
+</li>
+<li>
+<p>In the Principal Dashboard, click <strong>Code Generator</strong> (<code>data-view="code"</code>).</p>
+</li>
+<li>
+<p>Review the <strong>Teacher Registration Codes</strong> table:</p>
+<ul>
+<li>
+<p>If the code shows <code>is_used = Yes</code>, it has already been redeemed.</p>
+</li>
+<li>
+<p>If the code shows <code>Expired</code>, its validity window has elapsed.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>The Principal should generate a fresh code and provide it to the teacher. Refer to the <a href="#usage-principal-code-generator">Code Generator section in the User Guide</a>.</p>
+</li>
+</ol>
+<hr />
+<h3 id="troubleshooting-problem-4-learner-enrollment-conflict-single-classroom-restriction">Problem 4: Learner Enrollment Conflict (<code>Single Classroom Restriction</code>)<a class="headerlink" href="#troubleshooting-problem-4-learner-enrollment-conflict-single-classroom-restriction" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom</strong>: When a teacher attempts to add or enroll a student, the system returns an HTTP <code>409 Conflict</code> error: <em>"This learner is already enrolled in classroom 'Grade 1 - Daisy'. Each student can only belong to one classroom at a time."</em></p>
+<p><strong>Cause</strong>: The database constraint <code>uq_student</code> on table <code>classroom_members</code> strictly prevents a student from being registered in more than one classroom concurrently.</p>
+<p><strong>Fix</strong>:</p>
+<ol>
+<li>
+<p>Identify the student's current classroom by consulting the previous teacher or asking the Principal to review the <strong>Students Report</strong> (<code>data-view="report"</code>).</p>
+</li>
+<li>
+<p>Have the previous teacher open their classroom in <code>teacher.html</code>, locate the learner in the roster, and remove the student from that classroom.</p>
+</li>
+<li>
+<p>Once unassigned, the new teacher can immediately enroll the learner using the <strong>Enroll Existing Learner</strong> option.</p>
+</li>
+</ol>
+<hr />
+<h3 id="troubleshooting-problem-5-webcam-feed-is-black-or-camera-access-denied">Problem 5: Webcam Feed Is Black or Camera Access Denied<a class="headerlink" href="#troubleshooting-problem-5-webcam-feed-is-black-or-camera-access-denied" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom</strong>: When opening <strong>Sign and Spell</strong>, the camera box remains completely black, or a browser pop-up displays <code>NotAllowedError: Permission denied</code>.</p>
+<p><strong>Cause</strong>: The browser blocked webcam access, camera permissions were dismissed, or another video conferencing application (Zoom, Microsoft Teams, Google Meet) has locked the webcam hardware.</p>
+<p><strong>Fix</strong>:</p>
+<ol>
+<li>
+<p>In Google Chrome or Microsoft Edge, look at the URL address bar. Click the <strong>Camera Settings</strong> icon on the left side of the address bar.</p>
+</li>
+<li>
+<p>Change the camera permission from <strong>Block</strong> to <strong>Allow</strong>.</p>
+</li>
+<li>
+<p>Close any external applications that might be using your webcam (e.g., Zoom, OBS, Teams).</p>
+</li>
+<li>
+<p>Refresh the webpage (<code>F5</code> or <code>Ctrl+F5</code>).</p>
+</li>
+<li>
+<p>Ensure the room has adequate front-facing lighting so MediaPipe can detect hand landmarks accurately against your background.</p>
+</li>
+</ol>
+<hr />
+<h3 id="troubleshooting-problem-6-api-requests-return-http-404-not-found-apache-mod_rewrite">Problem 6: API Requests Return HTTP 404 Not Found (<code>Apache mod_rewrite</code>)<a class="headerlink" href="#troubleshooting-problem-6-api-requests-return-http-404-not-found-apache-mod_rewrite" title="Permanent link">&para;</a></h3>
+<p><strong>Symptom</strong>: Frontend network requests to <code>/fsl_learn/api/auth/login</code> or <code>/fsl_learn/api/classrooms</code> fail with HTTP <code>404 Not Found</code>.</p>
+<p><strong>Cause</strong>: Apache's <code>mod_rewrite</code> module is disabled, or the <code>.htaccess</code> file was not copied into the web root directory during file deployment.</p>
+<p><strong>Fix</strong>:</p>
+<ol>
+<li>Verify that the <code>.htaccess</code> file exists in <code>C:\laragon\www\fsl_learn\.htaccess</code>. If missing, copy it from <code>backend/php/.htaccess</code>:</li>
+</ol>
+<div class="language-bat highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#troubleshooting-__codelineno-6-1"></a><span class="k">copy</span> C:\Users\dexte\Documents\GitHub\FINAL-FSL\backend\php\.htaccess C:\laragon\www\fsl_learn\.htaccess
 </span></code></pre></div>
-<p>2. Ensure <code>mod\_rewrite</code> is enabled in Apache:</p>
-<p>&#x20;   - In Laragon: Click **Menu &gt; Apache &gt; Modules &gt; rewrite_module** (ensure it has a checkmark).</p>
-<p>&#x20;   - In XAMPP: Open <code>httpd.conf</code> and verify <code>LoadModule rewrite\_module modules/mod\_rewrite.so</code> is not commented out.</p>
-<p>3. Restart Apache from the Laragon or XAMPP control panel.</p>
-<p>## Diagnostic Commands Reference</p>
+<ol>
+<li>
+<p>Ensure <code>mod_rewrite</code> is enabled in Apache:</p>
+<ul>
+<li>
+<p>In Laragon: Click <strong>Menu &gt; Apache &gt; Modules &gt; rewrite_module</strong> (ensure it has a checkmark).</p>
+</li>
+<li>
+<p>In XAMPP: Open <code>httpd.conf</code> and verify <code>LoadModule rewrite_module modules/mod_rewrite.so</code> is not commented out.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Restart Apache from the Laragon or XAMPP control panel.</p>
+</li>
+</ol>
+<h2 id="troubleshooting-diagnostic-commands-reference">Diagnostic Commands Reference<a class="headerlink" href="#troubleshooting-diagnostic-commands-reference" title="Permanent link">&para;</a></h2>
 <p>Use these diagnostic commands in PowerShell or Command Prompt to inspect your runtime environment:</p>
-<div class="language-powershell highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#troubleshooting-__codelineno-7-1"></a><span class="p">\</span><span class="c"># 1. Test MySQL connectivity and verify database tables</span>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#troubleshooting-__codelineno-7-1"></a><span class="c"># 1. Test MySQL connectivity and verify database tables</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#troubleshooting-__codelineno-7-2"></a>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#troubleshooting-__codelineno-7-3"></a><span class="n">mysql</span> <span class="n">-u</span> <span class="n">root</span> <span class="n">-p</span> <span class="n">-e</span> <span class="s2">"USE fsl\_learn; SHOW TABLES;"</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#troubleshooting-__codelineno-7-3"></a><span class="n">mysql</span> <span class="n">-u</span> <span class="n">root</span> <span class="n">-p</span> <span class="n">-e</span> <span class="s2">"USE fsl_learn; SHOW TABLES;"</span>
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#troubleshooting-__codelineno-7-4"></a>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#troubleshooting-__codelineno-7-5"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#troubleshooting-__codelineno-7-5"></a><span class="c"># 2. Check if Apache (port 80) and Python ML (port 8000) are actively listening</span>
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#troubleshooting-__codelineno-7-6"></a>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#troubleshooting-__codelineno-7-7"></a><span class="p">\</span><span class="c"># 2. Check if Apache (port 80) and Python ML (port 8000) are actively listening</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#troubleshooting-__codelineno-7-7"></a><span class="nb">Get-NetTCPConnection</span> <span class="n">-LocalPort</span> <span class="n">80</span><span class="p">,</span> <span class="n">8000</span><span class="p">,</span> <span class="n">3306</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">LocalAddress</span><span class="p">,</span> <span class="n">LocalPort</span><span class="p">,</span> <span class="n">State</span><span class="p">,</span> <span class="n">OwningProcess</span>
 </span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#troubleshooting-__codelineno-7-8"></a>
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#troubleshooting-__codelineno-7-9"></a><span class="nb">Get-NetTCPConnection</span> <span class="n">-LocalPort</span> <span class="n">80</span><span class="p">,</span> <span class="n">8000</span><span class="p">,</span> <span class="n">3306</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="n">LocalAddress</span><span class="p">,</span> <span class="n">LocalPort</span><span class="p">,</span> <span class="n">State</span><span class="p">,</span> <span class="n">OwningProcess</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#troubleshooting-__codelineno-7-9"></a><span class="c"># 3. Test the Python FastAPI Health Endpoint directly</span>
 </span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#troubleshooting-__codelineno-7-10"></a>
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#troubleshooting-__codelineno-7-11"></a>
-</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#troubleshooting-__codelineno-7-12"></a>
-</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#troubleshooting-__codelineno-7-13"></a><span class="p">\</span><span class="c"># 3. Test the Python FastAPI Health Endpoint directly</span>
-</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#troubleshooting-__codelineno-7-14"></a>
-</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#troubleshooting-__codelineno-7-15"></a><span class="nb">Invoke-RestMethod</span> <span class="n">-Uri</span> <span class="s2">"http://127.0.0.1:8000/api/health"</span> <span class="n">-Method</span> <span class="n">Get</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#troubleshooting-__codelineno-7-11"></a><span class="nb">Invoke-RestMethod</span> <span class="n">-Uri</span> <span class="s2">"http://127.0.0.1:8000/api/health"</span> <span class="n">-Method</span> <span class="n">Get</span>
 </span></code></pre></div>
-<p>For detailed operational guidance on using each feature, consult the [User Guide](usage.md). For complete installation steps, refer to the [Installation Guide](installation.md).</p></section></div><style>.print-site-enumerate-headings #index > h1:before { content: '1 ' }
+<p>For detailed operational guidance on using each feature, consult the <a href="#usage">User Guide</a>. For complete installation steps, refer to the <a href="#installation">Installation Guide</a>.</p></section></div><style>.print-site-enumerate-headings #index > h1:before { content: '1 ' }
 
                 .print-site-enumerate-headings #index h2:before { content: '1.' counter(counter-index-2) ' ' }
                 .print-site-enumerate-headings #index h2 {  counter-reset: counter-index-3 ;  counter-increment: counter-index-2 }
